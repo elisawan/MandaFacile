@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:pds"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Image x:Key="send-file-xxl.ico" Source="send-file-xxl.ico" />
     </Application.Resources>
+    
 </Application>
