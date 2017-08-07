@@ -34,6 +34,9 @@ namespace pds
             notify_context.MenuItems.Add("In linea", new EventHandler(Disponibile));
             notify_context.MenuItems.Add("Invisibile", new EventHandler(Invisibile));
             notify_icon.ContextMenu = notify_context;
+
+            //Questo metodo inserisce nella lista gli utenti presenti
+            ListBoxDataBinding();
         }
         //METODI PER LA GESTIONE DEI CLICK SULL'ICONA NELLA BARRA DEGLI STRUMENTI
         private void Disponibile(object sender, EventArgs e)
@@ -84,6 +87,31 @@ namespace pds
         
         }
 
+        //TODO metodo per riempire la box list, bisogna sostituire i nomi giusti che l'ho preso da internet
+        
+        public void ListBoxDataBinding()
+        {
+            List<User> items = new List<User>();
+            User u = new User();
+            u.username = "Roberto";
+            u.ip_address = "192.168.1.2";
+            u.port = 2212;
 
+            //
+            Image img = new Image();
+            Uri ur = new Uri("laura.jpg", UriKind.RelativeOrAbsolute);
+
+            ImageSource isu = new BitmapImage(ur);
+            img.SetValue(Image.SourceProperty, isu);
+            //
+            u.foto_utente = img;
+            items.Add(u);
+           
+            items.Add(new User() {username = "Carolina",ip_address = "192.168.1.15", port = 4445, foto_utente =img });
+
+            listBox.ItemsSource = items;
+            listBox.BringIntoView();
+        }
+        
     }
 }
