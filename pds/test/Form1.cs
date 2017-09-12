@@ -15,11 +15,15 @@ namespace test
     {
         private System.Windows.Forms.ContextMenu contextMenu1;
         private System.Windows.Forms.MenuItem menuItem1;
+        private System.Windows.Forms.MenuItem menuItemPubblicoPrivato;
+        private bool pubblico=false;
 
         public Mandafacile()
         {
             InitializeComponent();
+            //riempie la lista -> da inserire in un thread?
             fillListView();
+            //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
         }
 
@@ -35,20 +39,43 @@ namespace test
             this.components = new System.ComponentModel.Container();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.menuItemPubblicoPrivato = new System.Windows.Forms.MenuItem();
 
             // Initialize contextMenu1
             this.contextMenu1.MenuItems.AddRange(
-                        new System.Windows.Forms.MenuItem[] { this.menuItem1 });
+                        new System.Windows.Forms.MenuItem[] { this.menuItem1, this.menuItemPubblicoPrivato });
 
             // Initialize menuItem1
             this.menuItem1.Index = 0;
             this.menuItem1.Text = "E&xit";
             this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
+
+            //inizializzo il secondo tasto
+            this.menuItemPubblicoPrivato.Index = 0;
+            this.menuItemPubblicoPrivato.Text = "Pubblico/Privato";
+            this.menuItemPubblicoPrivato.Click += new System.EventHandler(this.menuItemPubblicoPrivato_Click);
+
+
             notifyIcon1.ContextMenu = this.contextMenu1;
             // Handle the DoubleClick event to activate the form.
             notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
         }
 
+        private void menuItemPubblicoPrivato_Click(object sender, EventArgs e)
+        {
+            if (!pubblico)
+            {
+                MessageBox.Show("Profilo impostato come pubblico");
+                pubblico = true;
+            }
+            else {
+                pubblico = false;
+                MessageBox.Show("Profilo impostato come privato");
+            }
+                
+        }
+
+        //Metodo che viene invocato cliccando sul tasto menuitem1
         private void menuItem1_Click(object Sender, EventArgs e)
         {
             // Close the form, which closes the application.
