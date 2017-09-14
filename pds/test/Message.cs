@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace test
 {
@@ -35,8 +36,10 @@ namespace test
             mcastEndP = new IPEndPoint(mcastAddr, mcastPort);
             mcastSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-            localAddr = IPAddress.Parse("172.22.52.14");
-            localEnd = (EndPoint)new IPEndPoint(localAddr, mcastPort);
+            
+
+            localAddr = IPAddress.Parse("172.22.52.18");
+            localEnd = (EndPoint)new IPEndPoint(IPAddress.Any, mcastPort);
             mcastSocket.Bind(localEnd); // bind to local endpoint
 
             mcastOption = new MulticastOption(mcastAddr);
@@ -83,7 +86,7 @@ namespace test
         {
             Debug.WriteLine("Discover: start");
             endP = new IPEndPoint(IPAddress.Any, 0);
-            mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes("MandaFacile: Hello!"), mcastEndP);
+            mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes("MandaFacile: Bella socio!"), mcastEndP);
 
             Debug.WriteLine("Discover: end");
         }
@@ -105,9 +108,11 @@ namespace test
                 endP = new IPEndPoint(IPAddress.Any, 0);
                 Debug.WriteLine(endP.ToString());
                 mcastSocket.ReceiveFrom(buffer, ref endP);
-                if (!endP.ToString().Equals("172.22.52.14"))
-                {
-                    Debug.WriteLine(endP.ToString());
+                MessageBox.Show("Ciao Eli");
+
+                //if (!endP.ToString().Equals("192.168.43.92"))
+                //{
+                Debug.WriteLine(endP.ToString());
                     Debug.WriteLine(Encoding.ASCII.GetString(buffer, 0, buffer.Length));
 
                     // TO DO: inviare le informazione del nuovo utente tramite qualche sorta di 
@@ -116,8 +121,8 @@ namespace test
                     // inviare il proprio pacchetto di presentazione in multicast
                     // per farti conoscere dal nuovo utente 
                     // e per aggiornare le info che gli altri utenti possiedono
-                    HelloEveryone();
-                }
+                   this.HelloEveryone();
+                //}
 
                 endP = null;
             }
