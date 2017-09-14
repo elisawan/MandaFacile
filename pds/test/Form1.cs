@@ -22,7 +22,8 @@ namespace test
         {
             InitializeComponent();
 
-
+            Message message = new Message();
+            message.Start();
 
             //riempie la lista -> da inserire in un thread?
             fillListView();
@@ -151,9 +152,9 @@ namespace test
 
             // Initialize the ImageList objects with bitmaps.
             imageListSmall.Images.Add(Bitmap.FromFile("don.jpg"));
-            imageListSmall.Images.Add(Bitmap.FromFile("coffee_time.png"));
+            imageListSmall.Images.Add(Bitmap.FromFile("don.jpg"));
             imageListLarge.Images.Add(Bitmap.FromFile("don.jpg"));
-            imageListLarge.Images.Add(Bitmap.FromFile("coffee_time.png"));
+            imageListLarge.Images.Add(Bitmap.FromFile("don.jpg"));
 
             //Assign the ImageList objects to the ListView.
             listView1.LargeImageList = imageListLarge;
