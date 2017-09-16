@@ -22,8 +22,7 @@ namespace test
         {
             InitializeComponent();
 
-            Message message = new Message();
-            message.Start();
+            
 
             //riempie la lista -> da inserire in un thread?
             fillListView();
@@ -205,6 +204,16 @@ namespace test
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            TestMulticastOptionListen.Run();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            TestMulticastOptionSend.Run();
         }
     }
 }

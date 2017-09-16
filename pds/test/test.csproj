@@ -46,8 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestMulticastOptionSend.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="Message.cs" />
+    <Compile Include="TestMulticastOptionListen.cs" />
     <Compile Include="Metodi_Thread.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
