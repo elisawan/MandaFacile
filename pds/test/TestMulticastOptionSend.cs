@@ -66,6 +66,9 @@ namespace test
                 endPoint = new IPEndPoint(mcastAddress, mcastPort);
                 mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes(message), endPoint);
                 Console.WriteLine("Multicast data sent.....");
+
+                IPEndPoint myEnd = new IPEndPoint(IPAddress.Parse("192.168.1.99"), mcastPort);
+                mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes("my message"), myEnd);
             }
             catch (Exception e)
             {
@@ -90,6 +93,14 @@ namespace test
 
             // Broadcast the message to the listener.
             BroadcastMessage("Hello multicast listener.");
+        }
+
+        public static void sendTCP()
+        {
+            Socket socket = new Socket(AddressFamily.InterNetwork,
+                                         SocketType.Stream,
+                                         ProtocolType.Tcp);
+
         }
     }
 }
