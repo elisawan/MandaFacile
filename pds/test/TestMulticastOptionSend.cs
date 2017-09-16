@@ -30,9 +30,9 @@ namespace test
 
                 // Get the local IP address used by the listener and the sender to
                 // exchange multicast messages. 
-                // Console.Write("\nEnter local IPAddress for sending multicast packets: ");
-                // IPAddress localIPAddr = IPAddress.Parse(Console.ReadLine());
-                IPAddress localIPAddr = IPAddress.Any;
+                Console.Write("\nEnter local IPAddress for sending multicast packets: ");
+                IPAddress localIPAddr = IPAddress.Parse(Console.ReadLine());
+                // IPAddress localIPAddr = IPAddress.Any;
                 // Create an IPEndPoint object. 
                 IPEndPoint IPlocal = new IPEndPoint(localIPAddr, 0);
 
