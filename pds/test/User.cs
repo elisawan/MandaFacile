@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,12 @@ namespace test
     {
         private String nomeUtente;
         private String IpAddress;
-        //private foto
+        private String ImmagineUtente;
 
-        public User(String nomeUtente, String IpAddress) {
+        public User(String nomeUtente, String IpAddress, String PercorsoImmagine) {
             this.nomeUtente = nomeUtente;
             this.IpAddress = IpAddress;
+            this.ImmagineUtente = PercorsoImmagine;
         }
 
         public String get_username()
@@ -25,6 +27,11 @@ namespace test
         public String get_address()
         {
             return this.IpAddress;
+        }
+
+        public String get_immagine()
+        {
+            return this.ImmagineUtente;
         }
     }
 }

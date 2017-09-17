@@ -101,7 +101,7 @@ namespace test
         {
             //ListView listView1 = listvi
             //listView1.Bounds = new Rectangle(new Point(10, 10), new Size(300, 200));
-
+            User utente_prova = new User("Ganondorf", "192.168.19.2", "gan.jpg");
             // Set the view to show details.
             listView1.View = View.Details;
             // Allow the user to edit item text.
@@ -136,6 +136,13 @@ namespace test
             item3.SubItems.Add("192.168.1.26");
             //item3.SubItems.Add("9");
 
+            //Oggetto di prova per usare la classe utente
+            ListViewItem item4 = new ListViewItem(utente_prova.get_username(), 0);
+            // Place a check mark next to the item.
+            item4.Checked = false;
+            item4.SubItems.Add("-");
+            item4.SubItems.Add(utente_prova.get_address());
+
             // Create columns for the items and subitems.
             listView1.Columns.Add("Utente", -2, HorizontalAlignment.Left);
             listView1.Columns.Add("Porta", -2, HorizontalAlignment.Left);
@@ -143,17 +150,19 @@ namespace test
             //listView1.Columns.Add("Column 4", -2, HorizontalAlignment.Center);
             
             //Add the items to the ListView.
-            listView1.Items.AddRange(new ListViewItem[] { item1, item2, item3 });
+            listView1.Items.AddRange(new ListViewItem[] { item1, item2, item3, item4 });
 
             // Create two ImageList objects.
             ImageList imageListSmall = new ImageList();
             ImageList imageListLarge = new ImageList();
 
             // Initialize the ImageList objects with bitmaps.
+            imageListSmall.Images.Add(Bitmap.FromFile(utente_prova.get_immagine()));
             imageListSmall.Images.Add(Bitmap.FromFile("don.jpg"));
             imageListSmall.Images.Add(Bitmap.FromFile("don.jpg"));
-            imageListLarge.Images.Add(Bitmap.FromFile("don.jpg"));
-            imageListLarge.Images.Add(Bitmap.FromFile("don.jpg"));
+            imageListLarge.Images.Add(Bitmap.FromFile(utente_prova.get_immagine()));
+            //imageListLarge.Images.Add(Bitmap.FromFile("don.jpg"));
+            //imageListLarge.Images.Add(utente_prova.get_immagine());
 
             //Assign the ImageList objects to the ListView.
             listView1.LargeImageList = imageListLarge;
