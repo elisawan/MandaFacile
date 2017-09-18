@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace test
 {
@@ -32,6 +33,14 @@ namespace test
         public String get_immagine()
         {
             return this.ImmagineUtente;
+        }
+    }
+
+    class UserList : ObservableCollection<User>
+    {
+        UserList()
+        {
+
         }
     }
 }
