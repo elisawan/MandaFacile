@@ -38,12 +38,6 @@ namespace test
                 endPoint = new IPEndPoint(mcastAddress, mcastPort);
                 mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes(message), endPoint);
                 Console.WriteLine("Multicast data sent.....");
-<<<<<<< HEAD
-
-                // IPEndPoint myEnd = new IPEndPoint(IPAddress.Parse("192.168.1.99"), mcastPort);
-                // mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes("my message"), myEnd);
-=======
->>>>>>> elisa
             }
             catch (Exception e)
             {
