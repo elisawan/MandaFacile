@@ -18,5 +18,7 @@ namespace test
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Mandafacile());
         }
+
+        
     }
 }

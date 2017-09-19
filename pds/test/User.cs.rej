@@ -1,0 +1,14 @@
+diff a/pds/test/User.cs b/pds/test/User.cs	(rejected hunks)
+@@ -28,4 +28,12 @@
+             return this.IpAddress;
+         }
+     }
++
++    class UserList : ObservableCollection<User>
++    {
++        UserList()
++        {
++
++        }
++    }
+ }
