@@ -207,7 +207,9 @@ namespace test
 
         private void button2_Click(object sender, EventArgs e)
         {
-            TestMulticastOptionListen.Run();
+            User u = new User("tu", "192.168.1.92", 1500);
+            SendFile sf = new SendFile(u, "text.txt");
+            sf.Run();
         }
 
         private void button3_Click(object sender, EventArgs e)

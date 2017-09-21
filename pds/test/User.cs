@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Net;
 
 namespace test
 {
@@ -13,11 +14,13 @@ namespace test
         private String nomeUtente;
         private String IpAddress;
         private String ImmagineUtente;
+        private int TCPPort;
 
-        public User(String nomeUtente, String IpAddress, String PercorsoImmagine) {
+        public User(String nomeUtente, String IpAddress, String PercorsoImmagine, int TCPPort) {
             this.nomeUtente = nomeUtente;
             this.IpAddress = IpAddress;
             this.ImmagineUtente = PercorsoImmagine;
+            this.TCPPort = TCPPort;
         }
 
         public String get_username()
@@ -34,6 +37,12 @@ namespace test
         {
             return this.ImmagineUtente;
         }
+
+        public int get_TCPPort()
+        {
+            return this.TCPPort;
+        }
+
     }
 
     class UserList : ObservableCollection<User>
