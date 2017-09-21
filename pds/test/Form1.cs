@@ -21,20 +21,16 @@ namespace test
         public Mandafacile()
         {
             InitializeComponent();
-
-            
-
             //riempie la lista -> da inserire in un thread?
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-        }
 
+
+        //MENU' CONTESTUALE ICONA DI NOTIFICA -> Questi metodi gestiscono l'icona di notifica e le sue funzioni
         public void set_notifyIconMenu()
         {
             
@@ -64,6 +60,7 @@ namespace test
             notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
         }
 
+
         private void menuItemPubblicoPrivato_Click(object sender, EventArgs e)
         {
             if (!pubblico)
@@ -78,7 +75,7 @@ namespace test
                 
         }
 
-        //Metodo che viene invocato cliccando sul tasto menuitem1
+        //Metodo che viene invocato cliccando sul tasto menuitem1 (che sarebbe exit, valutare se eliminarlo)
         private void menuItem1_Click(object Sender, EventArgs e)
         {
             // Close the form, which closes the application.
@@ -97,89 +94,89 @@ namespace test
             this.Activate();
         }
 
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+        }
+        //FINE ICONA DI NOTIFICA
+        //#########################################################################
+
+
+
+        //LISTA -> Questi metodi gestiscono la lista degli utenti visualizzati a schermo
         public void fillListView()
         {
             //ListView listView1 = listvi
             //listView1.Bounds = new Rectangle(new Point(10, 10), new Size(300, 200));
-            User utente_prova = new User("Ganondorf", "192.168.19.2", "gan.jpg");
-            // Set the view to show details.
-            listView1.View = View.Details;
-            // Allow the user to edit item text.
-            listView1.LabelEdit = true;
-            // Allow the user to rearrange columns.
-            listView1.AllowColumnReorder = true;
-            // Display check boxes.
-            listView1.CheckBoxes = true;
-            // Select the item and subitems when selection is made.
-            listView1.FullRowSelect = true;
-            // Display grid lines.
-            listView1.GridLines = true;
-            // Sort the items in the list in ascending order.
-            listView1.Sorting = SortOrder.Ascending;
 
-            // Create three items and three sets of subitems for each item.
-            ListViewItem item1 = new ListViewItem("Pinuccio", 0);
-            // Place a check mark next to the item.
-            item1.Checked = false;
-            item1.SubItems.Add("80901");
-            item1.SubItems.Add("192.168.1.2");
-            //item1.SubItems.Add("3");
-            ListViewItem item2 = new ListViewItem("Margherita", 1);
-            item2.Checked = false;
-            item2.SubItems.Add("80901");
-            item2.SubItems.Add("192.168.1.15");
-            //item2.SubItems.Add("6");
-            ListViewItem item3 = new ListViewItem("Federico", 0);
-            // Place a check mark next to the item.
-            item3.Checked = false;
-            item3.SubItems.Add("80901");
-            item3.SubItems.Add("192.168.1.26");
-            //item3.SubItems.Add("9");
 
-            //Oggetto di prova per usare la classe utente
-            ListViewItem item4 = new ListViewItem(utente_prova.get_username(), 0);
-            // Place a check mark next to the item.
-            item4.Checked = false;
-            item4.SubItems.Add("-");
-            item4.SubItems.Add(utente_prova.get_address());
+            User u1 = new User("Don", "192.168.19.2", "don.jpg");
+            User u2 = new User("Pikachu", "192.168.19.3", "pi.png");
 
-            // Create columns for the items and subitems.
-            listView1.Columns.Add("Utente", -2, HorizontalAlignment.Left);
-            listView1.Columns.Add("Porta", -2, HorizontalAlignment.Left);
-            listView1.Columns.Add("Indirizzo IP", -2, HorizontalAlignment.Left);
-            //listView1.Columns.Add("Column 4", -2, HorizontalAlignment.Center);
+            User[] Users = { u1, u2 };
+
+            this.listView1.Columns.Add("Nome");
+            this.listView1.Columns.Add("Indirizzo IP");
+            this.listView1.View = View.Tile;
+            this.listView1.TileSize = new Size(180, 50);
+            this.listView1.MultiSelect = true;
+            this.listView1.HideSelection = false;
+
+            ImageList imageList = new ImageList();
+            imageList.ImageSize = new Size(48, 48);
             
-            //Add the items to the ListView.
-            listView1.Items.AddRange(new ListViewItem[] { item1, item2, item3, item4 });
 
-            // Create two ImageList objects.
-            ImageList imageListSmall = new ImageList();
-            ImageList imageListLarge = new ImageList();
-
-            // Initialize the ImageList objects with bitmaps.
-            imageListSmall.Images.Add(Bitmap.FromFile(utente_prova.get_immagine()));
-            imageListSmall.Images.Add(Bitmap.FromFile("don.jpg"));
-            imageListSmall.Images.Add(Bitmap.FromFile("don.jpg"));
-            imageListLarge.Images.Add(Bitmap.FromFile(utente_prova.get_immagine()));
-            //imageListLarge.Images.Add(Bitmap.FromFile("don.jpg"));
-            //imageListLarge.Images.Add(utente_prova.get_immagine());
-
-            //Assign the ImageList objects to the ListView.
-            listView1.LargeImageList = imageListLarge;
-            listView1.SmallImageList = imageListSmall;
-
-            // Add the ListView to the control collection.
+            listView1.LargeImageList = imageList;
+            int i = 0;
+            foreach (User u in Users)
+            {   
+                ListViewItem item = new ListViewItem(u.get_username(), i);
+                
+                item.SubItems.Add(u.get_address());
+                imageList.Images.Add(Bitmap.FromFile(u.get_immagine()));
+                this.listView1.Items.Add(item);
+                
+                i++;
+            }
+            
             this.Controls.Add(listView1);
+            
         }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void listView1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        
+        //FINE LISTA
+        //#########################################################################
+
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
+        
+
+        //METODI THREAD -> Valutarne lo spostamento/cancellazione
         //bottone invia
         private void button1_Click(object sender, EventArgs e)
         {
+            //Tramite questo foreach, ottieni tutti gli utenti che sono stati selezionati
+            ListView.SelectedListViewItemCollection utenti = this.listView1.SelectedItems;
+            foreach (ListViewItem item in utenti)
+            {
+                MessageBox.Show(item.Text + "," +item.SubItems[1].Text);
+            }
 
             //INIZIALIZZO THREAD 1 - RICERCA SULLA RETE
             // Create the thread object. This does not start the thread.
@@ -205,15 +202,8 @@ namespace test
             Console.WriteLine("main thread: Invio terminato.");
         }
 
-        private void listView1_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
 
-        }
-
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            
-        }
+        
 
         private void button2_Click(object sender, EventArgs e)
         {
