@@ -23,10 +23,13 @@ namespace test
         void Send()
         {
             Socket sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint recvEnd = new IPEndPoint(IPAddress.Parse(receiver.get_address()), receiver.get_TCPPort());
+            EndPoint endP = new IPEndPoint(IPAddress.Any, 0);
+            IPAddress hostIP = (Dns.GetHostAddresses(Dns.GetHostName()))[0];
+            sendSocket.Bind(endP);
 
-            sendSocket.Connect(recvEnd);
-            Console.WriteLine("sending socket created");
+            sendSocket.Listen(3);
+
+            sendSocket.Accept();
 
             string length = String.Format("File length: {0}", 20);
             byte[] preBuf = Encoding.ASCII.GetBytes(length);
