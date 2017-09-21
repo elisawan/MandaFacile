@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RecvFile.cs" />
     <Compile Include="SendFile.cs" />
     <Compile Include="TestMulticastOptionSend.cs" />
     <Compile Include="User.cs" />

@@ -110,8 +110,8 @@ namespace test
             //listView1.Bounds = new Rectangle(new Point(10, 10), new Size(300, 200));
 
 
-            User u1 = new User("Don", "192.168.19.2", "don.jpg");
-            User u2 = new User("Pikachu", "192.168.19.3", "pi.png");
+            User u1 = new User("Don", "192.168.19.2", "don.jpg", 11000);
+            User u2 = new User("Pikachu", "192.168.19.3", "don.jpg", 11000);
 
             User[] Users = { u1, u2 };
 
@@ -207,7 +207,7 @@ namespace test
 
         private void button2_Click(object sender, EventArgs e)
         {
-            User u = new User("tu", "192.168.1.92", 1500);
+            User u = new User("tu", "192.168.1.92", "don.jpg", 1500);
             SendFile sf = new SendFile(u, "text.txt");
             sf.Run();
         }

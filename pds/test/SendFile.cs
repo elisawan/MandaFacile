@@ -27,7 +27,10 @@ namespace test
 
             sendSocket.Connect(recvEnd);
             Console.WriteLine("sending socket created");
-            sendSocket.SendFile(fileName);
+
+            string length = String.Format("File length: {0}", 20);
+            byte[] preBuf = Encoding.ASCII.GetBytes(length);
+            sendSocket.SendFile(fileName, preBuf, null, TransmitFileOptions.UseDefaultWorkerThread);
             Console.WriteLine("file sent");
 
             sendSocket.Shutdown(SocketShutdown.Both);
@@ -37,7 +40,7 @@ namespace test
         public void Run()
         {
             Thread th = new Thread(Send);
-            th.IsBackground = true;
+            //th.IsBackground = true;
             th.Start();
         }
     }
