@@ -30,7 +30,7 @@ namespace test
                     //MessageBox.Show(filename);
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
-                    Application.Run(new Mandafacile());
+                    Application.Run(new Mandafacile(fi.Name));
                 }
             }else
             {
