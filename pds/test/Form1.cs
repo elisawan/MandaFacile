@@ -17,7 +17,17 @@ namespace test
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem menuItemPubblicoPrivato;
         private bool pubblico=false;
+        //Costruttore che riceve il nome del file 
+        public Mandafacile(string filename)
+        {
 
+            InitializeComponent();
+            //riempie la lista -> da inserire in un thread?
+            fillListView();
+            //gestisce l'icona nella barra delle notifiche
+            set_notifyIconMenu();
+        }
+        //Costruttore senza parametro ricevuto
         public Mandafacile()
         {
             InitializeComponent();
@@ -26,8 +36,6 @@ namespace test
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
         }
-
-
 
 
         //MENU' CONTESTUALE ICONA DI NOTIFICA -> Questi metodi gestiscono l'icona di notifica e le sue funzioni
