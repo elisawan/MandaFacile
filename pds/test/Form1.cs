@@ -221,7 +221,9 @@ namespace test
 
         private void button3_Click(object sender, EventArgs e)
         {
-            TestMulticastOptionSend.Run();
+            User u1 = new User("Don", "127.0.0.1", "don.jpg", 15000);
+            SendFile sf = new SendFile(u1, "text.txt");
+            sf.Run();
         }
     }
 }

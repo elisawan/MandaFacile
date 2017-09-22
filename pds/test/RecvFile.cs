@@ -70,7 +70,7 @@ namespace test
         private TcpClient client;
         private int nRead;
         private int BUF_LEN = 1024;
-        private char RECV_FILE = 'R';
+        private string RECV_FILE = "R";
 
         public void set_client(TcpClient c)
         {
@@ -91,24 +91,31 @@ namespace test
             NetworkStream nStream = client.GetStream();
 
             // Read command: 'R' => Richiesta di ricezione file 
+
             nRead = nStream.Read(byteBuffer, 0, 1);
             if (nRead != 1)
             {
                 // TO DO: Throw exception
             }
             stringBuffer = Encoding.ASCII.GetString(byteBuffer, 0, nRead);
-
+            Console.WriteLine(stringBuffer);
             // Richiesta di ricezione file
             if (stringBuffer.Equals(RECV_FILE))
             {
+                Console.WriteLine("RECV_FILE");
                 // Leggere il file name 
-                nRead = nStream.Read(byteBuffer, 0, BUF_LEN);
+                nRead = nStream.Read(byteBuffer, 0, 1);
+                if((nRead != 1) || (!Encoding.ASCII.GetString(byteBuffer).Equals(" ")))
+                {
+                    // TO DO: Throw exception
+                }
+                nRead = nStream.Read(byteBuffer, 0, 8);
                 if (nRead <= 0)
                 {
                     // TO D0: Throw exception
                 }
                 fileName = Encoding.ASCII.GetString(byteBuffer, 0, nRead);
-
+                Console.WriteLine(fileName); 
                 // TO DO: update GUI with fileName
                 // TO DO: get confermation from GUI
                 // TO DO: get path from GUI 
@@ -119,18 +126,28 @@ namespace test
                 fStream = File.Create(path);
 
                 // Read file length
-                nRead = nStream.Read(byteBuffer, 0, BUF_LEN);
+                nStream.Read(byteBuffer, 0, 1);
+                nRead = nStream.Read(byteBuffer, 0, 2);
                 if (nRead <= 0)
                 {
                     // TO DO: throw exception
                 }
-                fileLength = BitConverter.ToInt32(byteBuffer, 0);
 
+                stringBuffer = ASCIIEncoding.ASCII.GetString(byteBuffer, 0, 2);
+                fileLength = 8;
+                Console.WriteLine(fileLength);
                 // Read file data from socket and write it on local disk
                 nLeft = fileLength;
                 while (nLeft > 0)
                 {
-                    nRead = nStream.Read(byteBuffer, 0, BUF_LEN);
+                    if(nLeft >= BUF_LEN)
+                    {
+                        nRead = nStream.Read(byteBuffer, 0, BUF_LEN);
+                    }
+                    else
+                    {
+                        nRead = nStream.Read(byteBuffer, 0, nLeft);
+                    }
                     nLeft -= nRead;
                     fStream.Write(byteBuffer, 0, nRead);
                 }

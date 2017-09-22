@@ -11,6 +11,9 @@ namespace test
 {
     class SendFile
     {
+        const string _STRING_END_ = "--FINE--";
+        const int _STRING_END_LEN = 8;
+
         String fileName { get; set; }
         User receiver { get; set; }
 
@@ -22,28 +25,31 @@ namespace test
 
         void Send()
         {
-            Socket sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            EndPoint endP = new IPEndPoint(IPAddress.Any, 0);
-            IPAddress hostIP = (Dns.GetHostAddresses(Dns.GetHostName()))[0];
-            sendSocket.Bind(endP);
+            IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(receiver.get_address()), receiver.get_TCPPort());
 
-            sendSocket.Listen(3);
+            Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Console.WriteLine("ip: " + receiver.get_address());
+            client.Connect(ipEndPoint);
 
-            sendSocket.Accept();
+            string buffer;
+            byte[] preBuf;
+            byte[] postBuf;
 
-            string length = String.Format("File length: {0}", 20);
-            byte[] preBuf = Encoding.ASCII.GetBytes(length);
-            sendSocket.SendFile(fileName, preBuf, null, TransmitFileOptions.UseDefaultWorkerThread);
+            buffer = String.Format("R {0} 20", fileName);
+            Console.WriteLine(buffer);
+            preBuf = Encoding.ASCII.GetBytes(buffer);
+            postBuf = Encoding.ASCII.GetBytes(_STRING_END_);
+            client.SendFile(fileName, preBuf, postBuf, TransmitFileOptions.UseDefaultWorkerThread);
             Console.WriteLine("file sent");
 
-            sendSocket.Shutdown(SocketShutdown.Both);
-            sendSocket.Close();
+            client.Shutdown(SocketShutdown.Both);
+            client.Close();
         }
 
         public void Run()
         {
             Thread th = new Thread(Send);
-            //th.IsBackground = true;
+            th.IsBackground = false;
             th.Start();
         }
     }
