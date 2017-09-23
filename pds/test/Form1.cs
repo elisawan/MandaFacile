@@ -41,8 +41,6 @@ namespace test
         //MENU' CONTESTUALE ICONA DI NOTIFICA -> Questi metodi gestiscono l'icona di notifica e le sue funzioni
         public void set_notifyIconMenu()
         {
-            
-
             this.components = new System.ComponentModel.Container();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
@@ -62,7 +60,6 @@ namespace test
             this.menuItemPubblicoPrivato.Text = "Pubblico/Privato";
             this.menuItemPubblicoPrivato.Click += new System.EventHandler(this.menuItemPubblicoPrivato_Click);
 
-
             notifyIcon1.ContextMenu = this.contextMenu1;
             // Handle the DoubleClick event to activate the form.
             notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
@@ -80,7 +77,6 @@ namespace test
                 pubblico = false;
                 MessageBox.Show("Profilo impostato come privato");
             }
-                
         }
 
         //Metodo che viene invocato cliccando sul tasto menuitem1 (che sarebbe exit, valutare se eliminarlo)
@@ -117,9 +113,8 @@ namespace test
             //ListView listView1 = listvi
             //listView1.Bounds = new Rectangle(new Point(10, 10), new Size(300, 200));
 
-
-            User u1 = new User("Don", "192.168.19.2", "don.jpg", 11000);
-            User u2 = new User("Pikachu", "192.168.19.3", "don.jpg", 11000);
+            User u1 = new User("Don", "192.168.19.2", "don.jpg");
+            User u2 = new User("Pikachu", "192.168.19.3", "don.jpg");
 
             User[] Users = { u1, u2 };
 
@@ -133,7 +128,6 @@ namespace test
             ImageList imageList = new ImageList();
             imageList.ImageSize = new Size(48, 48);
             
-
             listView1.LargeImageList = imageList;
             int i = 0;
             foreach (User u in Users)
@@ -148,14 +142,12 @@ namespace test
             }
             
             this.Controls.Add(listView1);
-            
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
-
 
         private void listView1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
@@ -215,15 +207,15 @@ namespace test
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Listen listen = new Listen();
-            listen.Start();
+            MulticastOptionListen.Run();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            User u1 = new User("Don", "127.0.0.1", "don.jpg", 15000);
-            SendFile sf = new SendFile(u1, "text.txt");
-            sf.Run();
+            User u1 = new User("Don", "127.0.0.1", "don.jpg");
+            String s = u1.Serialize();
+            Console.WriteLine(s);
+            MulticastOptionSend.Run();
         }
     }
 }

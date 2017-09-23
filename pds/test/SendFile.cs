@@ -25,7 +25,7 @@ namespace test
 
         void Send()
         {
-            IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(receiver.get_address()), receiver.get_TCPPort());
+            IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(receiver.get_address()), 15000);
 
             Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Console.WriteLine("ip: " + receiver.get_address());

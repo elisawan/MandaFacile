@@ -3,12 +3,16 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 
+/*
+ * Classe per l'invio di uno o più pacchetti UDP all'indirizzo multicast 224.168.100.2 e porta 11000
+ * 
+ */
 namespace test
 {
-    class TestMulticastOptionSend
+    class MulticastOptionSend
     {
-        static IPAddress mcastAddress;
-        static int mcastPort;
+        static IPAddress mcastAddress = IPAddress.Parse("224.168.100.2");
+        static int mcastPort = 11000;
         static Socket mcastSocket;
 
         static void JoinMulticastGroup()
@@ -47,13 +51,11 @@ namespace test
         }
   
         public static void Run()
-        {           
-            mcastAddress = IPAddress.Parse("224.168.100.2");
-            mcastPort = 11000;
-
+        {
+            User me = new User("io", "127.0.0.1", "don.jpg");
+            String s = me.Serialize();
             JoinMulticastGroup();
-
-            BroadcastMessage("Hello multicast listener.");
+            BroadcastMessage(s);
         }        
     }
 }
