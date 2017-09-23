@@ -17,14 +17,21 @@ namespace test
         private string nomeUtente;
         [JsonProperty]
         private string IpAddress;
+        [JsonProperty]
         private string ImmagineUtente;
         [JsonProperty]
         private string immagineBase64;
 
-        public User(String nomeUtente, String IpAddress, String PercorsoImmagine) {
+        public User()
+        {
+
+        }
+
+        public User(string nomeUtente, string IpAddress, string PercorsoImmagine, string immagineBase64) {
             this.nomeUtente = nomeUtente;
             this.IpAddress = IpAddress;
             this.ImmagineUtente = PercorsoImmagine;
+            this.immagineBase64 = immagineBase64;
         }
 
         public String get_username()
@@ -60,7 +67,7 @@ namespace test
         {
             ImageToBase64();
             String s = JsonConvert.SerializeObject(this, Formatting.Indented);
-            Console.WriteLine(s);
+            //Console.WriteLine(s);
             return s;
         }
     }
