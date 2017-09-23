@@ -17,12 +17,15 @@ namespace test
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem menuItemPubblicoPrivato;
         private bool pubblico=false;
+        private string nomeFile = null;
+        private string percorsoPreferito = null;
         //Costruttore che riceve il nome del file 
         public Mandafacile(string filename)
         {
 
             InitializeComponent();
             //riempie la lista -> da inserire in un thread?
+            initializeListView();
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
@@ -109,7 +112,15 @@ namespace test
         //FINE ICONA DI NOTIFICA
         //#########################################################################
 
-
+        public void initializeListView()
+        {
+            this.listView1.Columns.Add("Nome");
+            this.listView1.Columns.Add("Indirizzo IP");
+            this.listView1.View = View.Tile;
+            this.listView1.TileSize = new Size(180, 50);
+            this.listView1.MultiSelect = true;
+            this.listView1.HideSelection = false;
+        }
 
         //LISTA -> Questi metodi gestiscono la lista degli utenti visualizzati a schermo
         public void fillListView()
@@ -123,12 +134,7 @@ namespace test
 
             User[] Users = { u1, u2 };
 
-            this.listView1.Columns.Add("Nome");
-            this.listView1.Columns.Add("Indirizzo IP");
-            this.listView1.View = View.Tile;
-            this.listView1.TileSize = new Size(180, 50);
-            this.listView1.MultiSelect = true;
-            this.listView1.HideSelection = false;
+            
 
             ImageList imageList = new ImageList();
             imageList.ImageSize = new Size(48, 48);
