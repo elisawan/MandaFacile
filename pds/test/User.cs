@@ -6,21 +6,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Net;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace test
 {
     class User
     {
-        private String nomeUtente;
-        private String IpAddress;
-        private String ImmagineUtente;
-        private int TCPPort;
+        [JsonProperty]
+        private string nomeUtente;
+        [JsonProperty]
+        private string IpAddress;
+        private string ImmagineUtente;
+        [JsonProperty]
+        private string immagineBase64;
 
-        public User(String nomeUtente, String IpAddress, String PercorsoImmagine, int TCPPort) {
+        public User(String nomeUtente, String IpAddress, String PercorsoImmagine) {
             this.nomeUtente = nomeUtente;
             this.IpAddress = IpAddress;
             this.ImmagineUtente = PercorsoImmagine;
-            this.TCPPort = TCPPort;
         }
 
         public String get_username()
@@ -38,11 +42,27 @@ namespace test
             return this.ImmagineUtente;
         }
 
-        public int get_TCPPort()
+        private void ImageToBase64()
         {
-            return this.TCPPort;
+            if(this.ImmagineUtente != null)
+            {
+                Image image = Image.FromFile(this.ImmagineUtente);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    image.Save(ms, image.RawFormat);
+                    byte[] imageBytes = ms.ToArray();
+                    this.immagineBase64 = Convert.ToBase64String(imageBytes);
+                }
+            }
         }
 
+        public String Serialize()
+        {
+            ImageToBase64();
+            String s = JsonConvert.SerializeObject(this, Formatting.Indented);
+            Console.WriteLine(s);
+            return s;
+        }
     }
 
     class UserList : ObservableCollection<User>
