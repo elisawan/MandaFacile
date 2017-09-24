@@ -124,8 +124,8 @@ namespace test
             //ListView listView1 = listvi
             //listView1.Bounds = new Rectangle(new Point(10, 10), new Size(300, 200));
 
-            User u1 = new User("Don", "192.168.19.2", "don.jpg");
-            User u2 = new User("Pikachu", "192.168.19.3", "don.jpg");
+            User u1 = new User("Don", "192.168.19.2", "don.jpg", null);
+            User u2 = new User("Pikachu", "192.168.19.3", "don.jpg", null);
 
             User[] Users = { u1, u2 };
 
@@ -218,9 +218,9 @@ namespace test
 
         private void button3_Click(object sender, EventArgs e)
         {
-            User u1 = new User("Don", "127.0.0.1", "don.jpg");
+            User u1 = new User("Don", "127.0.0.1", "don.jpg", null);
             String s = u1.Serialize();
-            Console.WriteLine(s);
+            //Console.WriteLine(s);
             MulticastOptionSend.Run();
         }
 

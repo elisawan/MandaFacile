@@ -52,7 +52,7 @@ namespace test
   
         public static void Run()
         {
-            User me = new User("io", "127.0.0.1", "don.jpg");
+            User me = new User("io", "127.0.0.1", "don.jpg", null);
             String s = me.Serialize();
             JoinMulticastGroup();
             BroadcastMessage(s);

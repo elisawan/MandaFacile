@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
+using System.IO;
 
 /*
  * Thread in background 
@@ -53,10 +54,11 @@ namespace test
                     Console.WriteLine("Waiting for multicast packets...");
                     mcastSocket.ReceiveFrom(bytes, ref remoteEP);
                     string stringBuffer = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
-                    Console.WriteLine("Received broadcast from {0} :\n {1}\n", remoteEP.ToString(), stringBuffer);
                     User newUser = JsonConvert.DeserializeObject<User>(stringBuffer);
-                    Console.WriteLine("New User:");
-                    Console.WriteLine(newUser.ToString());
+                    Console.WriteLine("NEW");
+                    Console.WriteLine(newUser.get_address());
+                    Console.WriteLine(newUser.get_username());
+                    Console.WriteLine(newUser.get_immagine());
                 }
                 mcastSocket.Close();
             }
