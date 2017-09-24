@@ -57,6 +57,8 @@ namespace test
                     User newUser = JsonConvert.DeserializeObject<User>(stringBuffer);
                     Console.WriteLine("NEW");
                     Console.WriteLine(newUser.get_address());
+                    Console.WriteLine(newUser.get_username());
+                    Console.WriteLine(newUser.get_immagine());
                 }
                 mcastSocket.Close();
             }
