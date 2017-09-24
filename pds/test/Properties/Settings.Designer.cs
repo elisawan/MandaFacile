@@ -26,5 +26,9 @@ namespace test.Properties
                 return defaultInstance;
             }
         }
+
+        public string FotoProfilo { get; internal set; }
+        public string Percorso { get; internal set; }
+        public string UserName { get; internal set; }
     }
 }

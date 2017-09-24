@@ -223,5 +223,11 @@ namespace test
             Console.WriteLine(s);
             MulticastOptionSend.Run();
         }
+
+        private void buttonOpzioniProfilo_Click(object sender, EventArgs e)
+        {
+            OpzioniUtenteForm f = new OpzioniUtenteForm();
+            f.Show();
+        }
     }
 }

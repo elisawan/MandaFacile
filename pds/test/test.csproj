@@ -77,6 +77,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OpzioniUtenteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpzioniUtenteForm.Designer.cs">
+      <DependentUpon>OpzioniUtenteForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="RecvFile.cs" />
     <Compile Include="SendFile.cs" />
     <Compile Include="MulticastOptionSend.cs" />
@@ -93,6 +99,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpzioniUtenteForm.resx">
+      <DependentUpon>OpzioniUtenteForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
