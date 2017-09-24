@@ -16,20 +16,17 @@ namespace test
         {
             InitializeComponent();
             caricaPref();
-
         }
 
         public void caricaPref()
         {
             if (Properties.Settings.Default.UserName != null)
                 this.usernameTextBox.Text = Properties.Settings.Default.UserName;
-
             if (Properties.Settings.Default.FotoProfilo != null)
             {
                 this.userPic.Image = Bitmap.FromFile(Properties.Settings.Default.FotoProfilo);
                 this.userPic.SizeMode = PictureBoxSizeMode.Zoom;
             }
-
         }
 
         private void buttonScegliFoto_Click(object sender, EventArgs e)

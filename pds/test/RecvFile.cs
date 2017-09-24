@@ -7,6 +7,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using System.Windows.Forms;
 
 namespace test
 {
@@ -115,43 +116,52 @@ namespace test
                     // TO D0: Throw exception
                 }
                 fileName = Encoding.ASCII.GetString(byteBuffer, 0, nRead);
-                Console.WriteLine(fileName); 
+                Console.WriteLine(fileName);
                 // TO DO: update GUI with fileName
                 // TO DO: get confermation from GUI
                 // TO DO: get path from GUI 
+                path = Properties.Settings.Default.Percorso + @"\" + fileName;
+                Console.WriteLine(path);
 
-                path = fileName;
-
-                // TO DO: manage file name conflicts
-                fStream = File.Create(path);
-
-                // Read file length
-                nStream.Read(byteBuffer, 0, 1);
-                nRead = nStream.Read(byteBuffer, 0, 2);
-                if (nRead <= 0)
+                DialogResult dialogResult = MessageBox.Show("Ricezione file: " + fileName, "MandaFacile", MessageBoxButtons.OKCancel);
+                if (dialogResult == DialogResult.OK)
                 {
-                    // TO DO: throw exception
+                    // TO DO: manage file name conflicts
+                    fStream = File.Create(path);
+
+                    // Read file length
+                    nStream.Read(byteBuffer, 0, 1);
+                    nRead = nStream.Read(byteBuffer, 0, 2);
+                    if (nRead <= 0)
+                    {
+                        // TO DO: throw exception
+                    }
+
+                    stringBuffer = ASCIIEncoding.ASCII.GetString(byteBuffer, 0, 2);
+                    fileLength = 8;
+                    Console.WriteLine(fileLength);
+                    // Read file data from socket and write it on local disk
+                    nLeft = fileLength;
+                    while (nLeft > 0)
+                    {
+                        if (nLeft >= BUF_LEN)
+                        {
+                            nRead = nStream.Read(byteBuffer, 0, BUF_LEN);
+                        }
+                        else
+                        {
+                            nRead = nStream.Read(byteBuffer, 0, nLeft);
+                        }
+                        nLeft -= nRead;
+                        fStream.Write(byteBuffer, 0, nRead);
+                    }
+                    fStream.Close();
+                }
+                else if (dialogResult == DialogResult.Cancel)
+                {
+                    //do something else
                 }
 
-                stringBuffer = ASCIIEncoding.ASCII.GetString(byteBuffer, 0, 2);
-                fileLength = 8;
-                Console.WriteLine(fileLength);
-                // Read file data from socket and write it on local disk
-                nLeft = fileLength;
-                while (nLeft > 0)
-                {
-                    if(nLeft >= BUF_LEN)
-                    {
-                        nRead = nStream.Read(byteBuffer, 0, BUF_LEN);
-                    }
-                    else
-                    {
-                        nRead = nStream.Read(byteBuffer, 0, nLeft);
-                    }
-                    nLeft -= nRead;
-                    fStream.Write(byteBuffer, 0, nRead);
-                }
-                fStream.Close();
             }
         }
     }

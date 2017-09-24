@@ -19,10 +19,10 @@ namespace test
         private bool pubblico=false;
         private string nomeFile = null;
         private string percorsoPreferito = null;
+
         //Costruttore che riceve il nome del file 
         public Mandafacile(string filename)
         {
-
             InitializeComponent();
             //riempie la lista -> da inserire in un thread?
             initializeListView();
@@ -30,6 +30,7 @@ namespace test
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
         }
+
         //Costruttore senza parametro ricevuto
         public Mandafacile()
         {
@@ -39,7 +40,6 @@ namespace test
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
         }
-
 
         //MENU' CONTESTUALE ICONA DI NOTIFICA -> Questi metodi gestiscono l'icona di notifica e le sue funzioni
         public void set_notifyIconMenu()
@@ -213,15 +213,26 @@ namespace test
 
         private void button2_Click(object sender, EventArgs e)
         {
+            /*
             MulticastOptionListen.Run();
+            */
+
+            Listen l = new Listen();
+            l.Start();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            /*
             User u1 = new User("Don", "127.0.0.1", "don.jpg", null);
             String s = u1.Serialize();
             //Console.WriteLine(s);
             MulticastOptionSend.Run();
+            */
+
+            User u = new User("io", "127.0.0.1", "don.jpg", null);
+            SendFile sf = new SendFile(u, "text.txt");
+            sf.Run();
         }
 
         private void buttonOpzioniProfilo_Click(object sender, EventArgs e)

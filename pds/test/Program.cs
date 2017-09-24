@@ -15,10 +15,8 @@ namespace test
         [STAThread]
         static void Main(string [] args)
         {
-            
             if (args.Length > 0)
             {
-                
                 //il programma è stato avviato cliccando col destro su un file da inviare
                 string filepath = args[0];
                 if (File.Exists(filepath))

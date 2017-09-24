@@ -22,11 +22,6 @@ namespace test
         [JsonProperty]
         private string immagineBase64;
 
-        public User()
-        {
-
-        }
-
         public User(string nomeUtente, string IpAddress, string PercorsoImmagine, string immagineBase64) {
             this.nomeUtente = nomeUtente;
             this.IpAddress = IpAddress;
