@@ -24,8 +24,8 @@ namespace test
         public Mandafacile(string filename)
         {
             InitializeComponent();
-            //riempie la lista -> da inserire in un thread?
             initializeListView();
+            //riempie la lista -> da inserire in un thread?
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
@@ -124,8 +124,8 @@ namespace test
             //ListView listView1 = listvi
             //listView1.Bounds = new Rectangle(new Point(10, 10), new Size(300, 200));
 
-            User u1 = new User("Don", "192.168.19.2", "don.jpg", null);
-            User u2 = new User("Pikachu", "192.168.19.3", "don.jpg", null);
+            User u1 = new User("Don", "127.0.0.1", "don.jpg", null);
+            User u2 = new User("Pikachu", "127.0.0.1", "don.jpg", null);
 
             User[] Users = { u1, u2 };
 
@@ -182,6 +182,8 @@ namespace test
             foreach (ListViewItem item in utenti)
             {
                 MessageBox.Show(item.Text + "," +item.SubItems[1].Text);
+                SendFile sf = new SendFile(item.SubItems[1].Text, "text.txt");
+                sf.Run();
             }
 
             //INIZIALIZZO THREAD 1 - RICERCA SULLA RETE
@@ -216,9 +218,10 @@ namespace test
             /*
             MulticastOptionListen.Run();
             */
-
+            /*
             Listen l = new Listen();
             l.Start();
+            */
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -229,10 +232,11 @@ namespace test
             //Console.WriteLine(s);
             MulticastOptionSend.Run();
             */
-
+            /*
             User u = new User("io", "127.0.0.1", "don.jpg", null);
             SendFile sf = new SendFile(u, "text.txt");
             sf.Run();
+            */
         }
 
         private void buttonOpzioniProfilo_Click(object sender, EventArgs e)

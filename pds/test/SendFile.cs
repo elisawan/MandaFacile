@@ -16,12 +16,12 @@ namespace test
         const int _STRING_END_LEN = 8;
 
         String fileName { get; set; }
-        User receiver { get; set; }
+        IPAddress IP_sendTo;
 
-        public SendFile(User receiver, String fileName)
+        public SendFile(String IP, String fileName)
         {
             this.fileName = fileName;
-            this.receiver = receiver;
+            this.IP_sendTo = IPAddress.Parse(IP);
         }
 
         void Send()
@@ -38,12 +38,12 @@ namespace test
             pBar1.Step = 1;
 
 
-            IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(receiver.get_address()), 15000);
+            IPEndPoint ipEndPoint = new IPEndPoint(IP_sendTo, 15000);
             pBar1.PerformStep();
 
             Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             pBar1.PerformStep();
-            Console.WriteLine("ip: " + receiver.get_address());
+            Console.WriteLine("ip: " + IP_sendTo);
             client.Connect(ipEndPoint);
             pBar1.PerformStep();
 
