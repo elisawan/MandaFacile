@@ -18,7 +18,6 @@ namespace test
         private System.Windows.Forms.MenuItem menuItemPubblicoPrivato;
         private bool pubblico=false;
         private string nomeFile = null;
-        private string percorsoPreferito = null;
 
         //Costruttore che riceve il nome del file 
         public Mandafacile(string filename)
@@ -35,6 +34,7 @@ namespace test
         public Mandafacile()
         {
             InitializeComponent();
+            initializeListView();
             //riempie la lista -> da inserire in un thread?
             fillListView();
             //gestisce l'icona nella barra delle notifiche
@@ -182,7 +182,7 @@ namespace test
             foreach (ListViewItem item in utenti)
             {
                 MessageBox.Show(item.Text + "," +item.SubItems[1].Text);
-                SendFile sf = new SendFile(item.SubItems[1].Text, "text.txt");
+                SendFile sf = new SendFile(item.SubItems[1].Text, nomeFile);
                 sf.Run();
             }
 
