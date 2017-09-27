@@ -7,6 +7,7 @@ using System.Threading;
 using System.Net.Sockets;
 using System.Net;
 using System.Windows.Forms;
+using System.IO;
 
 namespace test
 {
@@ -15,12 +16,12 @@ namespace test
         const string _STRING_END_ = "--FINE--";
         const int _STRING_END_LEN = 8;
 
-        String fileName { get; set; }
+        String path { get; set; }
         IPAddress IP_sendTo;
 
-        public SendFile(String IP, String fileName)
+        public SendFile(String IP, String path)
         {
-            this.fileName = fileName;
+            this.path = path;
             this.IP_sendTo = IPAddress.Parse(IP);
         }
 
@@ -51,14 +52,20 @@ namespace test
             byte[] preBuf;
             byte[] postBuf;
 
-            buffer = String.Format("R {0} 20", fileName);
+            if(path == null)
+            {
+                path = "text.txt";
+            }
+            FileInfo fileInfo = new FileInfo(path);
+           
+            buffer = String.Format("R " + fileInfo.Name + " " + fileInfo.Length);
             Console.WriteLine(buffer);
             pBar1.PerformStep();
             preBuf = Encoding.ASCII.GetBytes(buffer);
             pBar1.PerformStep();
             postBuf = Encoding.ASCII.GetBytes(_STRING_END_);
             pBar1.PerformStep();
-            client.SendFile(fileName, preBuf, postBuf, TransmitFileOptions.UseDefaultWorkerThread);
+            client.SendFile(path, preBuf, postBuf, TransmitFileOptions.UseDefaultWorkerThread);
             pBar1.PerformStep();
             Console.WriteLine("file sent");
 

@@ -86,6 +86,7 @@
     <Compile Include="RecvFile.cs" />
     <Compile Include="SendFile.cs" />
     <Compile Include="MulticastOptionSend.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="User.cs" />
     <Compile Include="MulticastOptionListen.cs" />
     <Compile Include="Metodi_Thread.cs" />

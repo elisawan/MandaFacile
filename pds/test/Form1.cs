@@ -22,6 +22,9 @@ namespace test
         //Costruttore che riceve il nome del file 
         public Mandafacile(string filename)
         {
+            MessageBox.Show(filename);
+            nomeFile = filename;
+
             InitializeComponent();
             initializeListView();
             //riempie la lista -> da inserire in un thread?
@@ -128,8 +131,6 @@ namespace test
             User u2 = new User("Pikachu", "127.0.0.1", "don.jpg", null);
 
             User[] Users = { u1, u2 };
-
-            
 
             ImageList imageList = new ImageList();
             imageList.ImageSize = new Size(48, 48);

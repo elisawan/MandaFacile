@@ -19,7 +19,8 @@ namespace test
             TCPServer.Start();
 
             MulticastOptionListen.Run();
-           
+
+            MulticastOptionSend.Run();
 
             if (args.Length > 0)
             {
@@ -42,11 +43,6 @@ namespace test
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new Mandafacile());
             }
-            
-
-            
         }
-
-        
     }
 }

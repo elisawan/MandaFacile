@@ -52,7 +52,17 @@ namespace test
   
         public static void Run()
         {
-            User me = new User("io", "127.0.0.1", "don.jpg", null);
+            string userName = null;
+            string fotoProfilo = null;
+            if ((userName = Properties.Settings.Default.UserName) == null)
+            {
+                userName = "io";
+            }
+            if((fotoProfilo = Properties.Settings.Default.FotoProfilo) == null)
+            {
+                fotoProfilo = "don.jpg";
+            }
+            User me = new User(userName, "127.0.0.1", fotoProfilo, null);
             String s = me.Serialize();
             JoinMulticastGroup();
             BroadcastMessage(s);

@@ -44,6 +44,11 @@ namespace test
             return this.ImmagineUtente;
         }
 
+        public String get_immagineBase64()
+        {
+            return this.immagineBase64;
+        }
+
         private void ImageToBase64()
         {
             if(this.ImmagineUtente != null)

@@ -19,6 +19,7 @@ namespace test
         private static Socket mcastSocket;
         private static MulticastOption mcastOption;
         const int UDP_limit = 64 * 1024;
+        static private string path_fotoProfilo ="FotoProfilo";
 
         private static void StartMulticast()
         {
@@ -59,6 +60,13 @@ namespace test
                     Console.WriteLine(newUser.get_address());
                     Console.WriteLine(newUser.get_username());
                     Console.WriteLine(newUser.get_immagine());
+                    // salvare la foto profilo nella cartella designata
+                    bytes = Convert.FromBase64String(newUser.get_immagineBase64());
+                    using (FileStream image = new FileStream(path_fotoProfilo + @"\" + newUser.get_username() + ".jpg", FileMode.Create))
+                    {
+                        image.Write(bytes, 0, bytes.Length);
+                        image.Flush();
+                    }
                 }
                 mcastSocket.Close();
             }
