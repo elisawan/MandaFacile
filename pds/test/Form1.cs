@@ -18,7 +18,7 @@ namespace test
         private System.Windows.Forms.MenuItem menuItemPubblicoPrivato;
         private bool pubblico=false;
         private string nomeFile = null;
-
+        static public ProgressBar pb;
         //Costruttore che riceve il nome del file 
         public Mandafacile(string filename)
         {
@@ -31,6 +31,9 @@ namespace test
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
+
+            progressBar1.Visible = false;
+            pb = progressBar1;
         }
 
         //Costruttore senza parametro ricevuto

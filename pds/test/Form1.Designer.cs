@@ -34,6 +34,7 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.buttonOpzioniProfilo = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // button1
@@ -73,11 +74,20 @@
             this.buttonOpzioniProfilo.UseVisualStyleBackColor = true;
             this.buttonOpzioniProfilo.Click += new System.EventHandler(this.buttonOpzioniProfilo_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(163, 264);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(227, 25);
+            this.progressBar1.TabIndex = 5;
+            this.progressBar1.Visible = false;
+            // 
             // Mandafacile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(557, 299);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.buttonOpzioniProfilo);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.button1);
@@ -95,6 +105,7 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Button buttonOpzioniProfilo;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 

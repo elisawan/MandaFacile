@@ -27,7 +27,9 @@ namespace test
 
         void Send()
         {
+            //ProgressBar pBar1 = Mandafacile.pb;
             ProgressBar pBar1 = new ProgressBar();
+
             pBar1.Visible = true;
             // Set Minimum to 1 to represent the first file being copied.
             pBar1.Minimum = 1;
@@ -37,6 +39,7 @@ namespace test
             pBar1.Value = 1;
             // Set the Step property to a value of 1 to represent each step being performed
             pBar1.Step = 1;
+            pBar1.Style = ProgressBarStyle.Continuous;
 
 
             IPEndPoint ipEndPoint = new IPEndPoint(IP_sendTo, 15000);

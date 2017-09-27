@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 using System.IO;
 
 /*
@@ -55,7 +55,8 @@ namespace test
                     Console.WriteLine("Waiting for multicast packets...");
                     mcastSocket.ReceiveFrom(bytes, ref remoteEP);
                     string stringBuffer = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
-                    User newUser = JsonConvert.DeserializeObject<User>(stringBuffer);
+                    //User newUser = JsonConvert.DeserializeObject<User>(stringBuffer);
+                    User newUser = null;
                     Console.WriteLine("NEW");
                     Console.WriteLine(newUser.get_address());
                     Console.WriteLine(newUser.get_username());
