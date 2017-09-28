@@ -20,6 +20,7 @@ namespace test
         private string nomeFile = null;
         private System.Windows.Forms.Timer time = new System.Windows.Forms.Timer();
 
+
         //Costruttore che riceve il nome del file 
         public Mandafacile(string filename)
         {
@@ -183,7 +184,7 @@ namespace test
         //bottone invia
         private void button1_Click(object sender, EventArgs e)
         {
-
+            buttonStop.Enabled = true;
             progressBar1.Visible = true;
             progressBar1.Style = ProgressBarStyle.Continuous;
 
@@ -204,7 +205,7 @@ namespace test
                 SendFile sf = new SendFile(item.SubItems[1].Text, nomeFile);
                 sf.Run();
             }
-
+            /*
             //INIZIALIZZO THREAD 1 - RICERCA SULLA RETE
             // Create the thread object. This does not start the thread.
             SenderWorker workerObject = new SenderWorker();
@@ -227,6 +228,7 @@ namespace test
             // until the object's thread terminates.
             workerThread.Join();
             Console.WriteLine("main thread: Invio terminato.");
+            */
         }
 
 
@@ -244,17 +246,23 @@ namespace test
                 MessageBox.Show("Invio completato!");
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
-               
+                buttonStop.Enabled = false;
             }
         }
 
+        private void buttonStop_Click(object sender, EventArgs e)
+        {
+            buttonStop.Enabled = false;
+            //bisogna fare in modo che si chiami abort sul thread in sendfile
+        }
 
-
-
+        //METODO OPZIONI PROFILO
         private void buttonOpzioniProfilo_Click(object sender, EventArgs e)
         {
             OpzioniUtenteForm f = new OpzioniUtenteForm();
             f.Show();
         }
+
+        
     }
 }
