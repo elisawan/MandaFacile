@@ -120,8 +120,16 @@ namespace test
                 // TO DO: update GUI with fileName
                 // TO DO: get confermation from GUI
                 // TO DO: get path from GUI 
-                path = Properties.Settings.Default.Percorso + @"\" + fileName;
+               
+                if((path = Properties.Settings.Default.Percorso) == null)
+                {
+                    Console.WriteLine("Path null");
+                    Properties.Settings.Default.Percorso = @"C:\Users\" + Environment.UserName + @"\Documents\Mandafacile";
+                    Properties.Settings.Default.Save();
+                    path = Properties.Settings.Default.Percorso;
+                }
                 Console.WriteLine(path);
+                path = path + @"\" + fileName;
 
                 DialogResult dialogResult = MessageBox.Show("Ricezione file: " + fileName, "MandaFacile", MessageBoxButtons.OKCancel);
                 if (dialogResult == DialogResult.OK)
@@ -159,6 +167,7 @@ namespace test
                 }
                 else if (dialogResult == DialogResult.Cancel)
                 {
+                    Console.WriteLine("ricezione file rifiutata");
                     //do something else
                 }
 
