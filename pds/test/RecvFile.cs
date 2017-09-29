@@ -93,6 +93,21 @@ namespace test
 
             // Read command: 'R' => Richiesta di ricezione file 
 
+            /*//Informo l'utente che sta ricevendo un file e chiedo se vuole interrompere (o accettare?)
+             * const string message = "Stai ricevendo un file. Interrompere?";
+             * const string caption = "Interrompi ricezione";
+             * var result = MessageBox.Show(message, caption,
+             * MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+             * 
+             * if (result == DialogResult.No)
+             * //ecc....
+             * 
+             * 
+             * 
+             * 
+             */
+
+
             nRead = nStream.Read(byteBuffer, 0, 1);
             if (nRead != 1)
             {

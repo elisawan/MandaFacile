@@ -18,6 +18,8 @@ namespace test
         private System.Windows.Forms.MenuItem menuItemPubblicoPrivato;
         private bool pubblico=false;
         private string nomeFile = null;
+        private System.Windows.Forms.Timer time = new System.Windows.Forms.Timer();
+
 
         //Costruttore che riceve il nome del file 
         public Mandafacile(string filename)
@@ -31,6 +33,8 @@ namespace test
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
+
+            
         }
 
         //Costruttore senza parametro ricevuto
@@ -42,6 +46,8 @@ namespace test
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
+            
+
         }
 
         //MENU' CONTESTUALE ICONA DI NOTIFICA -> Questi metodi gestiscono l'icona di notifica e le sue funzioni
@@ -178,15 +184,28 @@ namespace test
         //bottone invia
         private void button1_Click(object sender, EventArgs e)
         {
+            buttonStop.Enabled = true;
+            progressBar1.Visible = true;
+            progressBar1.Style = ProgressBarStyle.Continuous;
+
+            // Set the interval for the timer.
+            time.Interval = 100;
+            // Connect the Tick event of the timer to its event handler.
+            time.Tick += new EventHandler(IncreaseProgressBar);
+            // Start the timer.
+            time.Start();
+            
+            
             //Tramite questo foreach, ottieni tutti gli utenti che sono stati selezionati
             ListView.SelectedListViewItemCollection utenti = this.listView1.SelectedItems;
             foreach (ListViewItem item in utenti)
-            {
+            {   
+
                 MessageBox.Show(item.Text + "," +item.SubItems[1].Text);
                 SendFile sf = new SendFile(item.SubItems[1].Text, nomeFile);
                 sf.Run();
             }
-
+            /*
             //INIZIALIZZO THREAD 1 - RICERCA SULLA RETE
             // Create the thread object. This does not start the thread.
             SenderWorker workerObject = new SenderWorker();
@@ -209,41 +228,41 @@ namespace test
             // until the object's thread terminates.
             workerThread.Join();
             Console.WriteLine("main thread: Invio terminato.");
+            */
         }
 
 
-        
-
-        private void button2_Click(object sender, EventArgs e)
+        private void IncreaseProgressBar(object sender, EventArgs e)
         {
-            /*
-            MulticastOptionListen.Run();
-            */
-            /*
-            Listen l = new Listen();
-            l.Start();
-            */
+            // Increment the value of the ProgressBar a value of one each time.
+            progressBar1.Increment(1);
+            // Display the textual value of the ProgressBar in the StatusBar control's first panel.
+            statusBar1.Text = progressBar1.Value.ToString() + "% Completed";
+            // Determine if we have completed by comparing the value of the Value property to the Maximum value.
+            if (progressBar1.Value == progressBar1.Maximum)
+            {
+                // Stop the timer.
+                time.Stop();
+                MessageBox.Show("Invio completato!");
+                progressBar1.Value = 0;
+                progressBar1.Visible = false;
+                buttonStop.Enabled = false;
+            }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void buttonStop_Click(object sender, EventArgs e)
         {
-            /*
-            User u1 = new User("Don", "127.0.0.1", "don.jpg", null);
-            String s = u1.Serialize();
-            //Console.WriteLine(s);
-            MulticastOptionSend.Run();
-            */
-            /*
-            User u = new User("io", "127.0.0.1", "don.jpg", null);
-            SendFile sf = new SendFile(u, "text.txt");
-            sf.Run();
-            */
+            buttonStop.Enabled = false;
+            //bisogna fare in modo che si chiami abort sul thread in sendfile
         }
 
+        //METODO OPZIONI PROFILO
         private void buttonOpzioniProfilo_Click(object sender, EventArgs e)
         {
             OpzioniUtenteForm f = new OpzioniUtenteForm();
             f.Show();
         }
+
+        
     }
 }

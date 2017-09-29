@@ -34,11 +34,14 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.buttonOpzioniProfilo = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.statusBar1 = new System.Windows.Forms.StatusBar();
+            this.buttonStop = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(470, 264);
+            this.button1.Location = new System.Drawing.Point(389, 264);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -73,14 +76,45 @@
             this.buttonOpzioniProfilo.UseVisualStyleBackColor = true;
             this.buttonOpzioniProfilo.Click += new System.EventHandler(this.buttonOpzioniProfilo_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(125, 264);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(227, 25);
+            this.progressBar1.TabIndex = 5;
+            this.progressBar1.Visible = false;
+            // 
+            // statusBar1
+            // 
+            this.statusBar1.Location = new System.Drawing.Point(0, 296);
+            this.statusBar1.Name = "statusBar1";
+            this.statusBar1.Size = new System.Drawing.Size(553, 22);
+            this.statusBar1.TabIndex = 6;
+            this.statusBar1.Text = "...";
+            // 
+            // buttonStop
+            // 
+            this.buttonStop.Enabled = false;
+            this.buttonStop.Location = new System.Drawing.Point(470, 264);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(75, 23);
+            this.buttonStop.TabIndex = 7;
+            this.buttonStop.Text = "Stop";
+            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
+            // 
             // Mandafacile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(557, 299);
+            this.ClientSize = new System.Drawing.Size(553, 318);
+            this.Controls.Add(this.buttonStop);
+            this.Controls.Add(this.statusBar1);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.buttonOpzioniProfilo);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.button1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Mandafacile";
             this.Text = "Mandafacile";
@@ -95,6 +129,9 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Button buttonOpzioniProfilo;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.StatusBar statusBar1;
+        private System.Windows.Forms.Button buttonStop;
     }
 }
 

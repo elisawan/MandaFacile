@@ -20,10 +20,7 @@ namespace test
         // This method will be called when the thread is started.
         public void DoWork()
         {
-            /*while (!_shouldStop)
-            {
-                Console.WriteLine("worker thread: Sto inviando un file...");
-            }*/
+            
             MessageBox.Show("Ciao Eli");
             //this.Close();
             Console.WriteLine("worker thread: terminating gracefully.");
@@ -32,6 +29,8 @@ namespace test
         {
             _shouldStop = true;
         }
+
+
         // Volatile is used as hint to the compiler that this data
         // member will be accessed by multiple threads.
         private volatile bool _shouldStop;
