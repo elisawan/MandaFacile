@@ -15,12 +15,11 @@ namespace test
         [STAThread]
         static void Main(string [] args)
         {
-            Listen TCPServer = new Listen();
-            TCPServer.Start();
+            Listen.Start();
 
             MulticastOptionListen.Run();
-
-            MulticastOptionSend.Run();
+            
+            //MulticastOptionSend.Run();
 
             if (args.Length > 0)
             {

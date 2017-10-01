@@ -55,6 +55,7 @@ namespace test
                     Console.WriteLine("Waiting for multicast packets...");
                     mcastSocket.ReceiveFrom(bytes, ref remoteEP);
                     string stringBuffer = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
+                    Console.WriteLine(stringBuffer);
                     //User newUser = JsonConvert.DeserializeObject<User>(stringBuffer);
                     User newUser = null;
                     Console.WriteLine("NEW");
@@ -87,6 +88,7 @@ namespace test
         {
             Thread thread = new Thread(Listen);
             thread.IsBackground = true;
+            thread.Name = "MulticastOptionListen";
             thread.Start();
         }
     }

@@ -14,10 +14,17 @@ namespace test
     class SendFile
     {
         const string _STRING_END_ = "--FINE--";
-        const int _STRING_END_LEN = 8;
+        const int _STRING_END_LEN_ = 8;
+        const string _STRING_ERR_ = "--ERROR--";
+        const int _STRING_ERR_LEN_ = 9;
+        const int _BUF_LEN_ = 1024;
+        private string RECV_FILE = "R";
 
         String path { get; set; }
         IPAddress IP_sendTo;
+
+        public AutoResetEvent terminateSend = new AutoResetEvent(false);
+        public ManualResetEvent doSend = new ManualResetEvent(true); 
 
         public SendFile(String IP, String path)
         {
@@ -40,8 +47,6 @@ namespace test
             pBar1.Step = 1;
             pBar1.Style = ProgressBarStyle.Continuous;
 
-
-
             for (int i = 0; i < 1000; i++)
             {
                 Application.DoEvents();
@@ -49,41 +54,79 @@ namespace test
                 Console.WriteLine(i);
             }
 
-
             /////////////////////
 
-            IPEndPoint ipEndPoint = new IPEndPoint(IP_sendTo, 15000);
+            int port = 15000;
+            TcpClient client = new TcpClient(IP_sendTo.ToString(), port);
+            NetworkStream stream = client.GetStream();
 
-            Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Console.WriteLine("ip: " + IP_sendTo);
-            client.Connect(ipEndPoint);
+            string stringBuffer;
+            byte[] byteBuffer;
+            WaitHandle[] handles = new WaitHandle[2];
+            handles[0] = terminateSend;
+            handles[1] = doSend;
+            FileInfo fileInfo;
 
-            string buffer;
-            byte[] preBuf;
-            byte[] postBuf;
-
-            if(path == null)
+            if (path == null)
             {
                 path = "text.txt";
             }
-            FileInfo fileInfo = new FileInfo(path);
-           
-            buffer = String.Format("R " + fileInfo.Name + " " + fileInfo.Length);
-            Console.WriteLine(buffer);
-            preBuf = Encoding.ASCII.GetBytes(buffer);
-            postBuf = Encoding.ASCII.GetBytes(_STRING_END_);
-            client.SendFile(path, preBuf, postBuf, TransmitFileOptions.UseDefaultWorkerThread);
-            Console.WriteLine("file sent");
+            fileInfo = new FileInfo(path);
+            if (fileInfo.Exists)
+            {
+                using (FileStream fileStream = fileInfo.OpenRead())
+                {
+                    // --> "R<File_Name_Len><File_Name><File_Length>"
+                    // R
+                    stream.Write(Encoding.ASCII.GetBytes(RECV_FILE), 0, 1);
+                    // <File_Name_Len>
+                    byteBuffer = BitConverter.GetBytes(fileInfo.Name.Length);
+                    stream.Write(byteBuffer, 0, byteBuffer.Length);
+                    // <File_Name>
+                    byteBuffer = Encoding.ASCII.GetBytes(fileInfo.Name);
+                    stream.Write(byteBuffer, 0, byteBuffer.Length);
+                    // <File_Len>
+                    byteBuffer = BitConverter.GetBytes((Int32)fileInfo.Length);
+                    stream.Write(byteBuffer, 0, byteBuffer.Length);
+                    
+                    // --> <File_Content>
+                    Int32 nRead = -1;
+                    byteBuffer = new Byte[1024];
+                    Thread.Sleep(5000);
+                    while ((WaitHandle.WaitAny(handles) == 1) && (nRead = fileStream.Read(byteBuffer, 0, byteBuffer.Length)) > 0) // solo doSend è segnalato
+                    {
+                       
+                        stream.Write(byteBuffer, 0, nRead);
+                        Console.WriteLine(Encoding.ASCII.GetString(byteBuffer));
+                    }
 
-            client.Shutdown(SocketShutdown.Both);
+                    // --> "--FINE--"
+                    if (nRead == 0) // file inviato con successo
+                    {
+                        Console.WriteLine("file inviato");
+                        byteBuffer = Encoding.ASCII.GetBytes(_STRING_END_);
+                        stream.Write(byteBuffer, 0, _STRING_END_LEN_);
+                    }
+                    else // invio file fallito
+                    {
+                        Console.WriteLine("invio fallito");
+                        byteBuffer = Encoding.ASCII.GetBytes(_STRING_ERR_);
+                        stream.Write(byteBuffer, 0, _STRING_ERR_LEN_);
+                    }
+                }
+            }
+            
+            stream.Close();
             client.Close();
         }
 
-        public void Run()
+        public Thread Run()
         {
             Thread th = new Thread(Send);
             th.IsBackground = false;
+            th.Name = "SendFile";
             th.Start();
+            return th;
         }
     }
 }

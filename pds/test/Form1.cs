@@ -19,6 +19,8 @@ namespace test
         private bool pubblico=false;
         private string nomeFile = null;
         private System.Windows.Forms.Timer time = new System.Windows.Forms.Timer();
+        private List<Thread> threads_sendFile = new List<Thread>();
+        private List<SendFile> list_sendFiles = new List<SendFile>(); 
 
 
         //Costruttore che riceve il nome del file 
@@ -76,7 +78,6 @@ namespace test
             // Handle the DoubleClick event to activate the form.
             notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
         }
-
 
         private void menuItemPubblicoPrivato_Click(object sender, EventArgs e)
         {
@@ -153,7 +154,6 @@ namespace test
                 
                 i++;
             }
-            
             this.Controls.Add(listView1);
         }
 
@@ -178,12 +178,11 @@ namespace test
             
         }
 
-        
-
         //METODI THREAD -> Valutarne lo spostamento/cancellazione
         //bottone invia
         private void button1_Click(object sender, EventArgs e)
         {
+            
             buttonStop.Enabled = true;
             progressBar1.Visible = true;
             progressBar1.Style = ProgressBarStyle.Continuous;
@@ -200,10 +199,10 @@ namespace test
             ListView.SelectedListViewItemCollection utenti = this.listView1.SelectedItems;
             foreach (ListViewItem item in utenti)
             {   
-
                 MessageBox.Show(item.Text + "," +item.SubItems[1].Text);
                 SendFile sf = new SendFile(item.SubItems[1].Text, nomeFile);
-                sf.Run();
+                list_sendFiles.Add(sf);
+                threads_sendFile.Add(sf.Run());
             }
             /*
             //INIZIALIZZO THREAD 1 - RICERCA SULLA RETE
@@ -231,7 +230,6 @@ namespace test
             */
         }
 
-
         private void IncreaseProgressBar(object sender, EventArgs e)
         {
             // Increment the value of the ProgressBar a value of one each time.
@@ -254,6 +252,14 @@ namespace test
         {
             buttonStop.Enabled = false;
             //bisogna fare in modo che si chiami abort sul thread in sendfile
+            foreach (SendFile sf in list_sendFiles)
+            {
+                sf.terminateSend.Set();
+            }
+            foreach(Thread th in threads_sendFile)
+            {
+                th.Join();
+            }
         }
 
         //METODO OPZIONI PROFILO
@@ -263,6 +269,5 @@ namespace test
             f.Show();
         }
 
-        
     }
 }

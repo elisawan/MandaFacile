@@ -6,20 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Net;
-//using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System.IO;
 
 namespace test
 {
     class User
     {
-       // [JsonProperty]
+        [JsonProperty]
         private string nomeUtente;
-        //[JsonProperty]
+        [JsonProperty]
         private string IpAddress;
-        //[JsonProperty]
+        [JsonProperty]
         private string ImmagineUtente;
-        //[JsonProperty]
+        [JsonProperty]
         private string immagineBase64;
 
         public User(string nomeUtente, string IpAddress, string PercorsoImmagine, string immagineBase64) {
@@ -66,9 +66,9 @@ namespace test
         public String Serialize()
         {
             ImageToBase64();
-            //String s = JsonConvert.SerializeObject(this, Formatting.Indented);
-            //Console.WriteLine(s);
-            return null;
+            String s = JsonConvert.SerializeObject(this, Formatting.Indented);
+            Console.WriteLine(s);
+            return s;
         }
     }
 

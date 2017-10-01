@@ -11,25 +11,26 @@ using System.Windows.Forms;
 
 namespace test
 {
-    class Listen
+    static class Listen
     {
         const int BUF_LEN = 1024;
         const string RECV_FILE = "R";
+       
+        const Int32 port = 15000;
 
-        Int32 port = 15000;
+        static private volatile bool listen;
 
-        private volatile bool listen;
-
-        public void Start()
+        static public void Start()
         {
             Console.WriteLine("Listen.Start()");
             listen = true;
             Thread th = new Thread(Receive);
             th.IsBackground = true;
+            th.Name = "RecvFileListen";
             th.Start();
         }
 
-        private void Receive()
+        static private void Receive()
         {
             Console.WriteLine("Listen.Receive()");
 
@@ -52,6 +53,7 @@ namespace test
                 Console.WriteLine("Listen.Receive(): connected");
                 // Create new Thread only for managing this connection
                 Thread th = new Thread(receive.ServeClient);
+                th.Name = "RecvFile";
                 th.Start();
             }
 
@@ -59,7 +61,7 @@ namespace test
             server.Stop();
         }
 
-        public void Stop()
+        static public void Stop()
         {
             Console.WriteLine("Listen.Stop()");
             listen = false;
@@ -72,6 +74,13 @@ namespace test
         private int nRead;
         private int BUF_LEN = 1024;
         private string RECV_FILE = "R";
+        const string _STRING_END_ = "--FINE--";
+        const int _STRING_END_LEN_ = 8;
+        const string _STRING_ERR_ = "--ERROR--";
+        const int _STRING_ERR_LEN_ = 9;
+
+        public AutoResetEvent terminateRecv = new AutoResetEvent(false);
+        public ManualResetEvent doRecv = new ManualResetEvent(true);
 
         public void set_client(TcpClient c)
         {
@@ -81,6 +90,7 @@ namespace test
         {
             Console.WriteLine("RecvFile.ServeClient()");
             string fileName;
+            Int32 fileName_len;
             string path;
             Int32 fileLength;
             Int32 nLeft;
@@ -88,6 +98,10 @@ namespace test
 
             byte[] byteBuffer = new byte[BUF_LEN];
             string stringBuffer = null;
+
+            WaitHandle[] handle = new WaitHandle[2];
+            handle[0] = terminateRecv;
+            handle[1] = doRecv;
 
             NetworkStream nStream = client.GetStream();
 
@@ -107,66 +121,48 @@ namespace test
              * 
              */
 
-
+            // comando
             nRead = nStream.Read(byteBuffer, 0, 1);
-            if (nRead != 1)
-            {
-                // TO DO: Throw exception
-            }
             stringBuffer = Encoding.ASCII.GetString(byteBuffer, 0, nRead);
             Console.WriteLine(stringBuffer);
             // Richiesta di ricezione file
             if (stringBuffer.Equals(RECV_FILE))
             {
-                Console.WriteLine("RECV_FILE");
+                // Leggere la lunghezza del nome del file
+                nRead = nStream.Read(byteBuffer, 0, sizeof(Int32));
+                fileName_len = BitConverter.ToInt32(byteBuffer, 0);
                 // Leggere il file name 
-                nRead = nStream.Read(byteBuffer, 0, 1);
-                if((nRead != 1) || (!Encoding.ASCII.GetString(byteBuffer).Equals(" ")))
-                {
-                    // TO DO: Throw exception
-                }
-                nRead = nStream.Read(byteBuffer, 0, 8);
-                if (nRead <= 0)
-                {
-                    // TO D0: Throw exception
-                }
-                fileName = Encoding.ASCII.GetString(byteBuffer, 0, nRead);
-                Console.WriteLine(fileName);
+                nRead = nStream.Read(byteBuffer, 0, fileName_len);
+                fileName = Encoding.UTF8.GetString(byteBuffer).TrimEnd('\0');
+
                 // TO DO: update GUI with fileName
                 // TO DO: get confermation from GUI
                 // TO DO: get path from GUI 
-               
-                if((path = Properties.Settings.Default.Percorso) == null)
-                {
-                    Console.WriteLine("Path null");
-                    Properties.Settings.Default.Percorso = @"C:\Users\" + Environment.UserName + @"\Documents\Mandafacile";
-                    Properties.Settings.Default.Save();
-                    path = Properties.Settings.Default.Percorso;
-                }
-                Console.WriteLine(path);
-                path = path + @"\" + fileName;
 
                 DialogResult dialogResult = MessageBox.Show("Ricezione file: " + fileName, "MandaFacile", MessageBoxButtons.OKCancel);
                 if (dialogResult == DialogResult.OK)
                 {
+                    if ((path = Properties.Settings.Default.Percorso) == null)
+                    {
+                        Console.WriteLine("Path null");
+                        Properties.Settings.Default.Percorso = @"C:\Users\" + Environment.UserName + @"\Documents\Mandafacile";
+                        Properties.Settings.Default.Save();
+                        path = Properties.Settings.Default.Percorso;
+                    }
+                    path = path + @"\" + fileName;
                     // TO DO: manage file name conflicts
-                    fStream = File.Create(path);
+                    fStream = File.OpenWrite(path);
 
                     // Read file length
-                    nStream.Read(byteBuffer, 0, 1);
-                    nRead = nStream.Read(byteBuffer, 0, 2);
-                    if (nRead <= 0)
-                    {
-                        // TO DO: throw exception
-                    }
+                    nRead = nStream.Read(byteBuffer, 0, sizeof(Int32));
+                    fileLength = BitConverter.ToInt32(byteBuffer, 0);
 
-                    stringBuffer = ASCIIEncoding.ASCII.GetString(byteBuffer, 0, 2);
-                    fileLength = 8;
-                    Console.WriteLine(fileLength);
                     // Read file data from socket and write it on local disk
                     nLeft = fileLength;
-                    while (nLeft > 0)
+                    bool stop = false;
+                    while (nLeft > 0 && !stop)
                     {
+                        Console.WriteLine("READ");
                         if (nLeft >= BUF_LEN)
                         {
                             nRead = nStream.Read(byteBuffer, 0, BUF_LEN);
@@ -175,10 +171,23 @@ namespace test
                         {
                             nRead = nStream.Read(byteBuffer, 0, nLeft);
                         }
-                        nLeft -= nRead;
-                        fStream.Write(byteBuffer, 0, nRead);
+                        if (Encoding.ASCII.GetString(byteBuffer).Contains(_STRING_ERR_))
+                        {
+                            stop = true;
+                            Console.WriteLine("errore");
+                            fStream.Close();
+                            File.Delete(path);
+                        }
+                        else
+                        {
+                            fStream.Write(byteBuffer, 0, nRead);
+                            stringBuffer = Encoding.ASCII.GetString(byteBuffer);
+                            nLeft -= nRead;
+                        }
                     }
+                    
                     fStream.Close();
+                    nStream.Close();
                 }
                 else if (dialogResult == DialogResult.Cancel)
                 {

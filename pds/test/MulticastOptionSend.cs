@@ -52,6 +52,7 @@ namespace test
   
         public static void Run()
         {
+            Console.Write("MulticastOptionSend.Run");
             string userName = null;
             string fotoProfilo = null;
             if ((userName = Properties.Settings.Default.UserName) == null)
