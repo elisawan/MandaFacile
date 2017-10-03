@@ -35,8 +35,6 @@ namespace test
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
-
-            
         }
 
         //Costruttore senza parametro ricevuto
@@ -48,8 +46,6 @@ namespace test
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
-            
-
         }
 
         //MENU' CONTESTUALE ICONA DI NOTIFICA -> Questi metodi gestiscono l'icona di notifica e le sue funzioni
@@ -194,7 +190,6 @@ namespace test
             // Start the timer.
             time.Start();
             
-            
             //Tramite questo foreach, ottieni tutti gli utenti che sono stati selezionati
             ListView.SelectedListViewItemCollection utenti = this.listView1.SelectedItems;
             foreach (ListViewItem item in utenti)
@@ -271,6 +266,5 @@ namespace test
             OpzioniUtenteForm f = new OpzioniUtenteForm();
             f.Show();
         }
-
     }
 }

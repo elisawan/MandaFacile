@@ -25,8 +25,6 @@ namespace test
 
         public AutoResetEvent terminateSend = new AutoResetEvent(false);
         public ManualResetEvent doSend = new ManualResetEvent(true);
-        public event EventHandler<int> add; 
-
 
         public SendFile(String IP, String path)
         {
@@ -44,7 +42,6 @@ namespace test
 
             Mandafacile.progresso++;
 
-            string stringBuffer;
             byte[] byteBuffer;
             WaitHandle[] handles = new WaitHandle[2];
             handles[0] = terminateSend;
@@ -127,7 +124,5 @@ namespace test
             Mandafacile.progresso++;
             return th;
         }
-
-        
     }
 }

@@ -3,8 +3,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-//using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System.IO;
+using System.Collections.Generic;
 
 /*
  * Thread in background 
@@ -20,6 +21,8 @@ namespace test
         private static MulticastOption mcastOption;
         const int UDP_limit = 64 * 1024;
         static private string path_fotoProfilo ="FotoProfilo";
+        private static bool stop = false;
+        static List<User> users = new List<User>();
 
         private static void StartMulticast()
         {
@@ -43,21 +46,23 @@ namespace test
 
         private static void ReceiveBroadcastMessages()
         {
-            bool done = false;
             byte[] bytes = new Byte[UDP_limit];
             IPEndPoint groupEP = new IPEndPoint(mcastAddress, mcastPort);
             EndPoint remoteEP = (EndPoint)new IPEndPoint(IPAddress.Any, 0);
 
             try
             {
-                while (!done)
+                while (!stop)
                 {
                     Console.WriteLine("Waiting for multicast packets...");
                     mcastSocket.ReceiveFrom(bytes, ref remoteEP);
                     string stringBuffer = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
                     Console.WriteLine(stringBuffer);
-                    //User newUser = JsonConvert.DeserializeObject<User>(stringBuffer);
-                    User newUser = null;
+                    User newUser = JsonConvert.DeserializeObject<User>(stringBuffer);
+                    lock (users)
+                    {
+                        users.Add(newUser);
+                    }
                     Console.WriteLine("NEW");
                     Console.WriteLine(newUser.get_address());
                     Console.WriteLine(newUser.get_username());
@@ -76,6 +81,11 @@ namespace test
             {
                 Console.WriteLine(e.ToString());
             }
+        }
+
+        private static void Stop(Object s, System.Timers.ElapsedEventArgs e)
+        {
+            stop = true;
         }
 
         public static void Listen()
