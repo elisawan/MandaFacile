@@ -37,6 +37,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.statusBar1 = new System.Windows.Forms.StatusBar();
             this.buttonStop = new System.Windows.Forms.Button();
+            this.updateButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -51,6 +52,7 @@
             // 
             // listView1
             // 
+            this.listView1.BackColor = System.Drawing.Color.Beige;
             this.listView1.Location = new System.Drawing.Point(12, 12);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(533, 246);
@@ -78,7 +80,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(125, 264);
+            this.progressBar1.Location = new System.Drawing.Point(156, 262);
             this.progressBar1.Maximum = 40;
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(227, 25);
@@ -104,11 +106,25 @@
             this.buttonStop.UseVisualStyleBackColor = true;
             this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
             // 
+            // updateButton
+            // 
+            this.updateButton.BackColor = System.Drawing.Color.Transparent;
+            this.updateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.updateButton.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.updateButton.Image = ((System.Drawing.Image)(resources.GetObject("updateButton.Image")));
+            this.updateButton.Location = new System.Drawing.Point(105, 264);
+            this.updateButton.Name = "updateButton";
+            this.updateButton.Size = new System.Drawing.Size(31, 26);
+            this.updateButton.TabIndex = 8;
+            this.updateButton.UseVisualStyleBackColor = false;
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
+            // 
             // Mandafacile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(553, 318);
+            this.Controls.Add(this.updateButton);
             this.Controls.Add(this.buttonStop);
             this.Controls.Add(this.statusBar1);
             this.Controls.Add(this.progressBar1);
@@ -133,6 +149,7 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.StatusBar statusBar1;
         private System.Windows.Forms.Button buttonStop;
+        private System.Windows.Forms.Button updateButton;
     }
 }
 
