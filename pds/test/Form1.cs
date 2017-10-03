@@ -20,8 +20,8 @@ namespace test
         private string nomeFile = null;
         private System.Windows.Forms.Timer time = new System.Windows.Forms.Timer();
         private List<Thread> threads_sendFile = new List<Thread>();
-        private List<SendFile> list_sendFiles = new List<SendFile>(); 
-
+        private List<SendFile> list_sendFiles = new List<SendFile>();
+        public static int progresso;
 
         //Costruttore che riceve il nome del file 
         public Mandafacile(string filename)
@@ -181,8 +181,8 @@ namespace test
         //METODI THREAD -> Valutarne lo spostamento/cancellazione
         //bottone invia
         private void button1_Click(object sender, EventArgs e)
-        {
-            
+        {   
+            progresso = 0;
             buttonStop.Enabled = true;
             progressBar1.Visible = true;
             progressBar1.Style = ProgressBarStyle.Continuous;
@@ -230,10 +230,11 @@ namespace test
             */
         }
 
-        private void IncreaseProgressBar(object sender, EventArgs e)
+        public void IncreaseProgressBar(object sender, EventArgs e)
         {
             // Increment the value of the ProgressBar a value of one each time.
-            progressBar1.Increment(1);
+            //progressBar1.Increment(1);
+            progressBar1.Increment(progresso - progressBar1.Value);
             // Display the textual value of the ProgressBar in the StatusBar control's first panel.
             statusBar1.Text = progressBar1.Value.ToString() + "% Completed";
             // Determine if we have completed by comparing the value of the Value property to the Maximum value.
@@ -251,6 +252,8 @@ namespace test
         private void buttonStop_Click(object sender, EventArgs e)
         {
             buttonStop.Enabled = false;
+            progressBar1.Value = 0;
+            progressBar1.Visible = false;
             //bisogna fare in modo che si chiami abort sul thread in sendfile
             foreach (SendFile sf in list_sendFiles)
             {
