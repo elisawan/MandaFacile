@@ -35,10 +35,16 @@ namespace test
             if (result == DialogResult.OK) // Test result.
             {
                 string file = openFileDialog1.FileName;
-                this.userPic.Image = Bitmap.FromFile(file);
-                this.userPic.SizeMode = PictureBoxSizeMode.Zoom;
-                Properties.Settings.Default.FotoProfilo = file;
-                Properties.Settings.Default.Save();
+                if (file.Contains(".jpg") || file.Contains(".jpeg") || file.Contains(".png") || file.Contains(".bmp"))
+                {
+                    this.userPic.Image = Bitmap.FromFile(file);
+                    this.userPic.SizeMode = PictureBoxSizeMode.Zoom;
+                    Properties.Settings.Default.FotoProfilo = file;
+                    Properties.Settings.Default.Save();
+                }else
+                {
+                    MessageBox.Show("Formato file non supportato\nFormati supportati: jpg, jpeg, png, bmp");
+                }
             }
         }
 
