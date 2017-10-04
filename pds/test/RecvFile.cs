@@ -78,6 +78,10 @@ namespace test
         const int _STRING_END_LEN_ = 8;
         const string _STRING_ERR_ = "--ERROR--";
         const int _STRING_ERR_LEN_ = 9;
+        const string _STRING_OK_ = "--OK--";
+        const int _STRING_OK_LEN_ = 6;
+        const string _STRING_NO_ = "--NO--";
+        const int _STRING_NO_LEN_ = 6;
 
         public AutoResetEvent terminateRecv = new AutoResetEvent(false);
         public ManualResetEvent doRecv = new ManualResetEvent(true);
@@ -105,21 +109,6 @@ namespace test
 
             NetworkStream nStream = client.GetStream();
 
-            // Read command: 'R' => Richiesta di ricezione file 
-
-            /*//Informo l'utente che sta ricevendo un file e chiedo se vuole interrompere (o accettare?)
-             * const string message = "Stai ricevendo un file. Interrompere?";
-             * const string caption = "Interrompi ricezione";
-             * var result = MessageBox.Show(message, caption,
-             * MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-             * 
-             * if (result == DialogResult.No)
-             * //ecc....
-             * 
-             * 
-             * 
-             * 
-             */
 
             // comando
             nRead = nStream.Read(byteBuffer, 0, 1);
@@ -142,6 +131,9 @@ namespace test
                 DialogResult dialogResult = MessageBox.Show("Ricezione file: " + fileName, "MandaFacile", MessageBoxButtons.OKCancel);
                 if (dialogResult == DialogResult.OK)
                 {
+                    byteBuffer = Encoding.ASCII.GetBytes(_STRING_OK_);
+                    nStream.Write(byteBuffer, 0, byteBuffer.Length);
+
                     if ((path = Properties.Settings.Default.Percorso) == null)
                     {
                         Console.WriteLine("Path null");
@@ -158,6 +150,7 @@ namespace test
                     fileLength = BitConverter.ToInt32(byteBuffer, 0);
 
                     // Read file data from socket and write it on local disk
+                    byteBuffer = new byte[BUF_LEN];
                     nLeft = fileLength;
                     bool stop = false;
                     while (nLeft > 0 && !stop)
@@ -191,6 +184,8 @@ namespace test
                 }
                 else if (dialogResult == DialogResult.Cancel)
                 {
+                    byteBuffer = Encoding.ASCII.GetBytes(_STRING_NO_);
+                    nStream.Write(byteBuffer, 0, byteBuffer.Length);
                     Console.WriteLine("ricezione file rifiutata");
                     //do something else
                 }

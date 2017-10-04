@@ -17,6 +17,10 @@ namespace test
         const int _STRING_END_LEN_ = 8;
         const string _STRING_ERR_ = "--ERROR--";
         const int _STRING_ERR_LEN_ = 9;
+        const string _STRING_OK_ = "--OK--";
+        const string _STRING_NO_ = "--NO--";
+        const int _STRING_NO_LEN_ = 6;
+        const int _STRING_OK_LEN_ = 6;
         const int _BUF_LEN_ = 1024;
         private string RECV_FILE = "R";
 
@@ -43,6 +47,7 @@ namespace test
             Mandafacile.progresso++;
 
             byte[] byteBuffer;
+            string stringBuffer;
             WaitHandle[] handles = new WaitHandle[2];
             handles[0] = terminateSend;
             handles[1] = doSend;
@@ -81,26 +86,41 @@ namespace test
                     stream.Write(byteBuffer, 0, byteBuffer.Length);
                     Mandafacile.progresso += 5;
 
-                    // --> <File_Content>
-                    Int32 nRead = -1;
-                    byteBuffer = new Byte[1024];
-                    while ((WaitHandle.WaitAny(handles) == 1) && (nRead = fileStream.Read(byteBuffer, 0, byteBuffer.Length)) > 0) // solo doSend è segnalato
-                    {  
-                        stream.Write(byteBuffer, 0, nRead);
-                    }
-                    Mandafacile.progresso += 10;
-                    // --> "--FINE--"
-                    if (nRead == 0) // file inviato con successo
+                    // richiesta accettata ?
+                    byteBuffer = new byte[6];
+                    stream.Read(byteBuffer, 0, _STRING_NO_LEN_);
+                    stringBuffer = Encoding.ASCII.GetString(byteBuffer);
+                    if (stringBuffer.Contains(_STRING_NO_))
                     {
-                        Console.WriteLine("file inviato");
-                        byteBuffer = Encoding.ASCII.GetBytes(_STRING_END_);
-                        stream.Write(byteBuffer, 0, _STRING_END_LEN_);
+                        MessageBox.Show("file rifiutato");
                     }
-                    else // invio file fallito
+                    else if(stringBuffer.Contains(_STRING_OK_)){
+                        MessageBox.Show("richiesta di invio accettata, inizio trasferimento");
+                        // --> <File_Content>
+                        Int32 nRead = -1;
+                        byteBuffer = new Byte[1024];
+                        while ((WaitHandle.WaitAny(handles) == 1) && (nRead = fileStream.Read(byteBuffer, 0, byteBuffer.Length)) > 0) // solo doSend è segnalato
+                        {
+                            stream.Write(byteBuffer, 0, nRead);
+                        }
+                        Mandafacile.progresso += 10;
+                        // --> "--FINE--"
+                        if (nRead == 0) // file inviato con successo
+                        {
+                            Console.WriteLine("trasferimento file completato");
+                            byteBuffer = Encoding.ASCII.GetBytes(_STRING_END_);
+                            stream.Write(byteBuffer, 0, _STRING_END_LEN_);
+                        }
+                        else // invio file fallito
+                        {
+                            Console.WriteLine("trasferimento fallito");
+                            byteBuffer = Encoding.ASCII.GetBytes(_STRING_ERR_);
+                            stream.Write(byteBuffer, 0, _STRING_ERR_LEN_);
+                        }
+                    }
+                    else
                     {
-                        Console.WriteLine("invio fallito");
-                        byteBuffer = Encoding.ASCII.GetBytes(_STRING_ERR_);
-                        stream.Write(byteBuffer, 0, _STRING_ERR_LEN_);
+                        MessageBox.Show("errore di protocollo");
                     }
                     Mandafacile.progresso++;
                 }
