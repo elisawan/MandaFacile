@@ -144,16 +144,20 @@ namespace test
             
             listView1.LargeImageList = imageList;
             int i = 0;
-            foreach (User u in users)
-            {   
-                ListViewItem item = new ListViewItem(u.get_username(), i);
-                
-                item.SubItems.Add(u.get_address());
-                imageList.Images.Add(Bitmap.FromFile(u.get_immagine()));
-                this.listView1.Items.Add(item);
-                
-                i++;
+            lock (users)
+            {
+                foreach (User u in users)
+                {
+                    ListViewItem item = new ListViewItem(u.get_username(), i);
+
+                    item.SubItems.Add(u.get_address());
+                    imageList.Images.Add(Bitmap.FromFile(u.get_immagine()));
+                    this.listView1.Items.Add(item);
+
+                    i++;
+                }
             }
+            
             this.Controls.Add(listView1);
         }
 
@@ -274,6 +278,11 @@ namespace test
 
         private void updateButton_Click(object sender, EventArgs e)
         {
+            lock (users)
+            {
+                users = null;
+                users = new List<User>();
+            }
             MulticastOptionSend.Run();
             MessageBox.Show("Get Schwifty!");
         }
