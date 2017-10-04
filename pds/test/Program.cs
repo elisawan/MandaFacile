@@ -15,12 +15,6 @@ namespace test
         [STAThread]
         static void Main(string [] args)
         {
-            Listen.Start();
-           
-           
-            
-            
-
             if (args.Length > 0)
             {
                 //il programma è stato avviato cliccando col destro su un file da inviare

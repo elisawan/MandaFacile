@@ -45,8 +45,15 @@ namespace test
         //Costruttore senza parametro ricevuto
         public Mandafacile()
         {
+            if (Properties.Settings.Default.publico)
+            {
+                Listen.Start();
+                MulticastOptionSend.Run();
+            }
+                
             MulticastOptionListen ml = new MulticastOptionListen(this);
             ml.Run();
+
             InitializeComponent();
             initializeListView();
             //riempie la lista -> da inserire in un thread?
@@ -86,14 +93,16 @@ namespace test
 
         private void menuItemPubblicoPrivato_Click(object sender, EventArgs e)
         {
-            if (!pubblico)
+            if (!Properties.Settings.Default.publico)
             {
                 MessageBox.Show("Profilo impostato come pubblico");
-                pubblico = true;
+                Properties.Settings.Default.publico = true;
+                Listen.Start();
             }
             else {
-                pubblico = false;
+                Properties.Settings.Default.publico = false;
                 MessageBox.Show("Profilo impostato come privato");
+                Listen.Stop();
             }
         }
 
@@ -283,7 +292,11 @@ namespace test
                 users = null;
                 users = new List<User>();
             }
-            MulticastOptionSend.Run();
+
+            if (Properties.Settings.Default.publico)
+            {
+                MulticastOptionSend.Run();
+            }
             MessageBox.Show("Get Schwifty!");
         }
 
