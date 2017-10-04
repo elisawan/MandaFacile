@@ -11,7 +11,7 @@ using System.IO;
 
 namespace test
 {
-    class User
+    public class User
     {
         [JsonProperty]
         private string nomeUtente;

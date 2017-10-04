@@ -22,9 +22,14 @@ namespace test
         const int UDP_limit = 64 * 1024;
         static private string path_fotoProfilo ="FotoProfilo";
         private static bool stop = false;
-        static List<User> users = new List<User>();
+        private Mandafacile mf;
 
-        private static void StartMulticast()
+        public MulticastOptionListen(Mandafacile mf)
+        {
+            this.mf = mf;
+        }
+
+        private void StartMulticast()
         {
             try
             {
@@ -44,7 +49,7 @@ namespace test
             }
         }
 
-        private static void ReceiveBroadcastMessages()
+        private void ReceiveBroadcastMessages()
         {
             byte[] bytes = new Byte[UDP_limit];
             IPEndPoint groupEP = new IPEndPoint(mcastAddress, mcastPort);
@@ -57,12 +62,13 @@ namespace test
                     Console.WriteLine("Waiting for multicast packets...");
                     mcastSocket.ReceiveFrom(bytes, ref remoteEP);
                     string stringBuffer = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
-                    Console.WriteLine(stringBuffer);
+                    //Console.WriteLine(stringBuffer);
                     User newUser = JsonConvert.DeserializeObject<User>(stringBuffer);
-                    lock (users)
+                    lock (mf.users)
                     {
-                        users.Add(newUser);
+                        mf.users.Add(newUser);
                     }
+                    mf.Invoke(mf.updateUserDelegate);
                     Console.WriteLine("NEW");
                     Console.WriteLine(newUser.get_address());
                     Console.WriteLine(newUser.get_username());
@@ -83,18 +89,18 @@ namespace test
             }
         }
 
-        private static void Stop(Object s, System.Timers.ElapsedEventArgs e)
+        private void Stop(Object s, System.Timers.ElapsedEventArgs e)
         {
             stop = true;
         }
 
-        public static void Listen()
+        public void Listen()
         {
             StartMulticast();
             ReceiveBroadcastMessages();
         }
 
-        public static void Run()
+        public void Run()
         {
             Thread thread = new Thread(Listen);
             thread.IsBackground = true;

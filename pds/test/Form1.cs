@@ -22,6 +22,9 @@ namespace test
         private List<Thread> threads_sendFile = new List<Thread>();
         private List<SendFile> list_sendFiles = new List<SendFile>();
         public static int progresso;
+        public delegate void UpdateUser();
+        public UpdateUser updateUserDelegate;
+        public List<User> users = new List<User>();
 
         //Costruttore che riceve il nome del file 
         public Mandafacile(string filename)
@@ -42,13 +45,15 @@ namespace test
         //Costruttore senza parametro ricevuto
         public Mandafacile()
         {
+            MulticastOptionListen ml = new MulticastOptionListen(this);
+            ml.Run();
             InitializeComponent();
             initializeListView();
             //riempie la lista -> da inserire in un thread?
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
-            
+            updateUserDelegate = new UpdateUser(fillListView);
 
         }
 
@@ -134,17 +139,12 @@ namespace test
             //ListView listView1 = listvi
             //listView1.Bounds = new Rectangle(new Point(10, 10), new Size(300, 200));
 
-            User u1 = new User("Don", "127.0.0.1", "don.jpg", null);
-            User u2 = new User("Pikachu", "127.0.0.1", "don.jpg", null);
-
-            User[] Users = { u1, u2 };
-
             ImageList imageList = new ImageList();
             imageList.ImageSize = new Size(48, 48);
             
             listView1.LargeImageList = imageList;
             int i = 0;
-            foreach (User u in Users)
+            foreach (User u in users)
             {   
                 ListViewItem item = new ListViewItem(u.get_username(), i);
                 
@@ -274,7 +274,10 @@ namespace test
 
         private void updateButton_Click(object sender, EventArgs e)
         {
+            MulticastOptionSend.Run();
             MessageBox.Show("Get Schwifty!");
         }
+
+        
     }
 }

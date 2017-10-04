@@ -16,10 +16,10 @@ namespace test
         static void Main(string [] args)
         {
             Listen.Start();
-
-            MulticastOptionListen.Run();
+           
+           
             
-            //MulticastOptionSend.Run();
+            
 
             if (args.Length > 0)
             {
