@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Ionic.Zip;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -193,7 +195,13 @@ namespace test
                     DialogResult result = folderBrowserDialog1.ShowDialog();
                     if (result == DialogResult.OK)
                     {
-                        nomeFile = folderBrowserDialog1.SelectedPath;
+                        string percorso = folderBrowserDialog1.SelectedPath;
+                        string nomeFolder = Path.GetFileName(percorso);
+                        ZipFile zip = new ZipFile();
+                        zip.AddDirectory(percorso, nomeFolder);
+                        zip.Comment = "This zip was created at " + System.DateTime.Now.ToString("G");
+                        nomeFile = @"C:\Users\" + Environment.UserName + @"\Documents\Mandafacile\tmp_s\" + nomeFolder+".zip";
+                        zip.Save(nomeFile);
                     }
                 }else
                     return;
@@ -261,16 +269,17 @@ namespace test
                 MessageBox.Show("Invio completato!");
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
+                statusBar1.Text = "...";
                 buttonStop.Enabled = false;
             }
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
+            statusBar1.Text = "...";
             buttonStop.Enabled = false;
             progressBar1.Value = 0;
             progressBar1.Visible = false;
-            statusBar1.Text = "...";
             //bisogna fare in modo che si chiami abort sul thread in sendfile
             foreach (SendFile sf in list_sendFiles)
             {
