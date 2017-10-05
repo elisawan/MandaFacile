@@ -102,7 +102,7 @@ namespace test
             else {
                 Properties.Settings.Default.publico = false;
                 MessageBox.Show("Profilo impostato come privato");
-                Listen.Stop();
+               
             }
         }
 

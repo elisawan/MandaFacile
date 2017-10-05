@@ -20,6 +20,8 @@ namespace test
 
         static private volatile bool listen;
 
+        static TcpListener server;
+
         static public void Start()
         {
             Console.WriteLine("Listen.Start()");
@@ -38,13 +40,13 @@ namespace test
             Byte[] byteBuffer = new Byte[BUF_LEN];
 
             // Create socket
-            TcpListener server = new TcpListener(IPAddress.Any, port);
+            server = new TcpListener(IPAddress.Any, port);
 
             // Start listening
             server.Start();
 
             // Infinite loop
-            while (listen)
+            while (true)
             {
                 Console.WriteLine("Listen.Receive(): listening...");
                 RecvFile receive = new RecvFile();
@@ -56,15 +58,14 @@ namespace test
                 th.Name = "RecvFile";
                 th.Start();
             }
-
-            // Close server
-            server.Stop();
         }
 
         static public void Stop()
         {
             Console.WriteLine("Listen.Stop()");
-            listen = false;
+            // attende la terminazione delle trasmissioni ancora in corso
+            
+            server.Stop();
         }
     }
 
