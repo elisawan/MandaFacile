@@ -23,10 +23,11 @@ namespace test
         [JsonProperty]
         private string immagineBase64;
 
-        public User(string nomeUtente, string IpAddress, string PercorsoImmagine, string immagineBase64) {
+        public User(string nomeUtente, string IpAddress, string PercorsoImmagine, string nomeImmagine, string immagineBase64) {
             this.nomeUtente = nomeUtente;
             this.IpAddress = IpAddress;
-            this.ImmagineUtente = PercorsoImmagine;
+            this.immaginePath = PercorsoImmagine;
+            this.ImmagineUtente = nomeImmagine;
             this.immagineBase64 = immagineBase64;
         }
 
@@ -59,7 +60,7 @@ namespace test
         {
             if(this.ImmagineUtente != null)
             {
-                Image image = Image.FromFile(this.ImmagineUtente);
+                Image image = Image.FromFile(this.immaginePath);
                 using (MemoryStream ms = new MemoryStream())
                 {
                     image.Save(ms, image.RawFormat);

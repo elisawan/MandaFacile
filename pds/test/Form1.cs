@@ -236,30 +236,6 @@ namespace test
                 list_sendFiles.Add(sf);
                 threads_sendFile.Add(sf.Run());
             }
-            /*
-            //INIZIALIZZO THREAD 1 - RICERCA SULLA RETE
-            // Create the thread object. This does not start the thread.
-            SenderWorker workerObject = new SenderWorker();
-            Thread workerThread = new Thread(workerObject.DoWork);
-
-            // Start the worker thread.
-            workerThread.Start();
-            Console.WriteLine("main thread: Inizio thread invio...");
-            // Loop until worker thread activates.
-            while (!workerThread.IsAlive) ;
-
-            // Put the main thread to sleep for 1 millisecond to
-            // allow the worker thread to do some work:
-            Thread.Sleep(1);
-
-            // Request that the worker thread stop itself:
-            workerObject.RequestStop();
-
-            // Use the Join method to block the current thread 
-            // until the object's thread terminates.
-            workerThread.Join();
-            Console.WriteLine("main thread: Invio terminato.");
-            */
         }
 
         public void IncreaseProgressBar(object sender, EventArgs e)
@@ -308,6 +284,7 @@ namespace test
 
         private void updateButton_Click(object sender, EventArgs e)
         {
+            listView1.Clear();
             lock (users)
             {
                 users = null;

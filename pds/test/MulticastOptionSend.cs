@@ -64,7 +64,7 @@ namespace test
             {
                 fotoProfilo = "don.jpg";
             }
-            User me = new User(userName, "127.0.0.1", Path.GetFileName(fotoProfilo), null);
+            User me = new User(userName, "127.0.0.1", fotoProfilo ,Path.GetFileName(fotoProfilo), null);
             String s = me.Serialize();
             JoinMulticastGroup();
             BroadcastMessage(s);
