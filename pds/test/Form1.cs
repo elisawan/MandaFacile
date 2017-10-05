@@ -38,8 +38,6 @@ namespace test
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
-
-            
         }
 
         //Costruttore senza parametro ricevuto
@@ -54,7 +52,6 @@ namespace test
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
             updateUserDelegate = new UpdateUser(fillListView);
-
         }
 
         //MENU' CONTESTUALE ICONA DI NOTIFICA -> Questi metodi gestiscono l'icona di notifica e le sue funzioni
@@ -111,7 +108,6 @@ namespace test
             // Set the WindowState to normal if the form is minimized.
             if (this.WindowState == FormWindowState.Minimized)
                 this.WindowState = FormWindowState.Normal;
-
             // Activate the form.
             this.Activate();
         }
@@ -157,7 +153,6 @@ namespace test
                     i++;
                 }
             }
-            
             this.Controls.Add(listView1);
         }
 
@@ -170,12 +165,8 @@ namespace test
         {
 
         }
-
-        
         //FINE LISTA
         //#########################################################################
-
-
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -186,13 +177,12 @@ namespace test
         //bottone invia
         private void button1_Click(object sender, EventArgs e)
         {
-
             //Controllo se file=null
             if (nomeFile == null)
             {
-                DialogResult scelta = MessageBox.Show("Scelta file", "Vuoi mandare un singolo file? Premi OK.\nPremi No se vuoi inviare una cartella intera, Cancella altrimenti", MessageBoxButtons.YesNoCancel);
+                DialogResult scelta = MessageBox.Show("Vuoi mandare un singolo file? Premi OK.\nPremi No se vuoi inviare una cartella intera, Cancella altrimenti", "Scelta file", MessageBoxButtons.YesNoCancel);
 
-                if (scelta == DialogResult.OK)
+                if (scelta == DialogResult.Yes)
                 {
                     DialogResult result = openFileDialog1.ShowDialog();
                     if (result == DialogResult.OK)
@@ -209,8 +199,6 @@ namespace test
                     return;
             }
 
-
-
             progresso = 0;
             buttonStop.Enabled = true;
             progressBar1.Visible = true;
@@ -222,7 +210,6 @@ namespace test
             time.Tick += new EventHandler(IncreaseProgressBar);
             // Start the timer.
             time.Start();
-            
             
             //Tramite questo foreach, ottieni tutti gli utenti che sono stati selezionati
             ListView.SelectedListViewItemCollection utenti = this.listView1.SelectedItems;
@@ -312,7 +299,5 @@ namespace test
             MulticastOptionSend.Run();
             MessageBox.Show("Get Schwifty!");
         }
-
-        
     }
 }
