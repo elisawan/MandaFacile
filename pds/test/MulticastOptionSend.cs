@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
+using System.IO;
 
 /*
  * Classe per l'invio di uno o più pacchetti UDP all'indirizzo multicast 224.168.100.2 e porta 11000
@@ -63,7 +64,7 @@ namespace test
             {
                 fotoProfilo = "don.jpg";
             }
-            User me = new User(userName, "127.0.0.1", fotoProfilo, null);
+            User me = new User(userName, "127.0.0.1", Path.GetFileName(fotoProfilo), null);
             String s = me.Serialize();
             JoinMulticastGroup();
             BroadcastMessage(s);

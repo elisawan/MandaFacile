@@ -19,6 +19,7 @@ namespace test
         private string IpAddress;
         [JsonProperty]
         private string ImmagineUtente;
+        private string immaginePath;
         [JsonProperty]
         private string immagineBase64;
 
@@ -27,6 +28,11 @@ namespace test
             this.IpAddress = IpAddress;
             this.ImmagineUtente = PercorsoImmagine;
             this.immagineBase64 = immagineBase64;
+        }
+
+        public void set_immagine(string path)
+        {
+            this.ImmagineUtente = path;
         }
 
         public String get_username()
