@@ -15,6 +15,15 @@ namespace test
         [STAThread]
         static void Main(string [] args)
         {
+            //Creo la cartella mandafacile se non c'è già
+            if (!Directory.Exists(@"C:\Users\" + System.Environment.UserName + @"\Documents\Mandafacile"))
+            {
+                Directory.CreateDirectory(@"C:\Users\" + System.Environment.UserName + @"\Documents\Mandafacile");
+                Directory.CreateDirectory(@"C:\Users\" + System.Environment.UserName + @"\Documents\Mandafacile\tmp_s");
+
+            }
+
+
             if (args.Length > 0)
             {
                 //il programma è stato avviato cliccando col destro su un file da inviare

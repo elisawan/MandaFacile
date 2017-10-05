@@ -320,5 +320,12 @@ namespace test
             }
             MessageBox.Show("Get Schwifty!");
         }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            notifyIcon1.Visible = false;
+            notifyIcon1.Icon = null;
+            notifyIcon1.Dispose();
+        }
     }
 }
