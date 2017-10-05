@@ -185,7 +185,32 @@ namespace test
         //METODI THREAD -> Valutarne lo spostamento/cancellazione
         //bottone invia
         private void button1_Click(object sender, EventArgs e)
-        {   
+        {
+
+            //Controllo se file=null
+            if (nomeFile == null)
+            {
+                DialogResult scelta = MessageBox.Show("Scelta file", "Vuoi mandare un singolo file? Premi OK.\nPremi No se vuoi inviare una cartella intera, Cancella altrimenti", MessageBoxButtons.YesNoCancel);
+
+                if (scelta == DialogResult.OK)
+                {
+                    DialogResult result = openFileDialog1.ShowDialog();
+                    if (result == DialogResult.OK)
+                        nomeFile = openFileDialog1.FileName;
+                }
+                else if(scelta == DialogResult.No)
+                {
+                    DialogResult result = folderBrowserDialog1.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        nomeFile = folderBrowserDialog1.SelectedPath;
+                    }
+                }else
+                    return;
+            }
+
+
+
             progresso = 0;
             buttonStop.Enabled = true;
             progressBar1.Visible = true;
@@ -258,6 +283,7 @@ namespace test
             buttonStop.Enabled = false;
             progressBar1.Value = 0;
             progressBar1.Visible = false;
+            statusBar1.Text = "...";
             //bisogna fare in modo che si chiami abort sul thread in sendfile
             foreach (SendFile sf in list_sendFiles)
             {

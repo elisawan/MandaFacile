@@ -38,6 +38,8 @@
             this.statusBar1 = new System.Windows.Forms.StatusBar();
             this.buttonStop = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.SuspendLayout();
             // 
             // button1
@@ -119,6 +121,10 @@
             this.updateButton.UseVisualStyleBackColor = false;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Mandafacile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -150,6 +156,8 @@
         private System.Windows.Forms.StatusBar statusBar1;
         private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.Button updateButton;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }
 
