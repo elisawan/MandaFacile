@@ -20,7 +20,7 @@ namespace test
         private static Socket mcastSocket;
         private static MulticastOption mcastOption;
         const int UDP_limit = 64 * 1024;
-        static private string path_fotoProfilo ="FotoProfilo";
+        static private string path_fotoProfilo = @"C:\Users\" + Environment.UserName + @"\Documents\Mandafacile\FotoProfilo";
         private static bool stop = false;
         private Mandafacile mf;
 
@@ -62,24 +62,23 @@ namespace test
                     Console.WriteLine("Waiting for multicast packets...");
                     mcastSocket.ReceiveFrom(bytes, ref remoteEP);
                     string stringBuffer = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
-                    //Console.WriteLine(stringBuffer);
                     User newUser = JsonConvert.DeserializeObject<User>(stringBuffer);
+                    newUser.set_immagine(path_fotoProfilo + @"\" + newUser.get_immagine());
                     lock (mf.users)
                     {
                         mf.users.Add(newUser);
                     }
-                    mf.Invoke(mf.updateUserDelegate);
-                    Console.WriteLine("NEW");
-                    Console.WriteLine(newUser.get_address());
-                    Console.WriteLine(newUser.get_username());
-                    Console.WriteLine(newUser.get_immagine());
+                    
+                    
                     // salvare la foto profilo nella cartella designata
                     bytes = Convert.FromBase64String(newUser.get_immagineBase64());
-                    using (FileStream image = new FileStream(path_fotoProfilo + @"\" + newUser.get_username() + ".jpg", FileMode.Create))
+                    using (FileStream image = new FileStream(newUser.get_immagine(), FileMode.Create))
                     {
                         image.Write(bytes, 0, bytes.Length);
-                        image.Flush();
                     }
+                    mf.Invoke(mf.updateUserDelegate);
+                    MulticastOptionSend.Run();
+                   
                 }
                 mcastSocket.Close();
             }
