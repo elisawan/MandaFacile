@@ -16,7 +16,6 @@ namespace test
         private System.Windows.Forms.ContextMenu contextMenu1;
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem menuItemPubblicoPrivato;
-        private bool pubblico=false;
         private string nomeFile = null;
         private System.Windows.Forms.Timer time = new System.Windows.Forms.Timer();
         private List<Thread> threads_sendFile = new List<Thread>();
@@ -43,7 +42,7 @@ namespace test
         //Costruttore senza parametro ricevuto
         public Mandafacile()
         {
-            if (Properties.Settings.Default.publico)
+            if (Properties.Settings.Default.pubblico)
             {
                 Listen.Start();
                 MulticastOptionSend.Run();
@@ -90,14 +89,14 @@ namespace test
 
         private void menuItemPubblicoPrivato_Click(object sender, EventArgs e)
         {
-            if (!Properties.Settings.Default.publico)
+            if (!Properties.Settings.Default.pubblico)
             {
                 MessageBox.Show("Profilo impostato come pubblico");
-                Properties.Settings.Default.publico = true;
+                Properties.Settings.Default.pubblico = true;
                 Listen.Start();
             }
             else {
-                Properties.Settings.Default.publico = false;
+                Properties.Settings.Default.pubblico = false;
                 MessageBox.Show("Profilo impostato come privato");
                
             }
@@ -306,7 +305,7 @@ namespace test
                 users = new List<User>();
             }
 
-            if (Properties.Settings.Default.publico)
+            if (Properties.Settings.Default.pubblico)
             {
                 MulticastOptionSend.Run();
             }

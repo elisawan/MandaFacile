@@ -18,14 +18,13 @@ namespace test
        
         const Int32 port = 15000;
 
-        static private volatile bool listen;
-
         static TcpListener server;
+
+        static public List<RecvFile> recvFiles = new List<RecvFile>();
 
         static public void Start()
         {
             Console.WriteLine("Listen.Start()");
-            listen = true;
             Thread th = new Thread(Receive);
             th.IsBackground = true;
             th.Name = "RecvFileListen";
@@ -51,6 +50,7 @@ namespace test
                 Console.WriteLine("Listen.Receive(): listening...");
                 RecvFile receive = new RecvFile();
                 receive.set_client(server.AcceptTcpClient());
+                recvFiles.Add(receive);
                 // => Connection established
                 Console.WriteLine("Listen.Receive(): connected");
                 // Create new Thread only for managing this connection
@@ -63,9 +63,17 @@ namespace test
         static public void Stop()
         {
             Console.WriteLine("Listen.Stop()");
-            // attende la terminazione delle trasmissioni ancora in corso
-            
-            server.Stop();
+
+            //verificare che non ci siano trasferimenti in corso
+            if (recvFiles.Count == 0)
+            {
+                server.Stop();
+            }
+            else
+            {
+                MessageBox.Show("Impossibile passare alla modalità privata, trasferimento file in corso. Attendere la fine della trasmissione e ritentare");
+                Properties.Settings.Default.pubblico = true;
+            }
         }
     }
 
@@ -168,7 +176,7 @@ namespace test
                         if (Encoding.ASCII.GetString(byteBuffer).Contains(_STRING_ERR_))
                         {
                             stop = true;
-                            Console.WriteLine("errore");
+                            Console.WriteLine("Ricezione file fallito.");
                             fStream.Close();
                             File.Delete(path);
                         }
@@ -190,8 +198,8 @@ namespace test
                     Console.WriteLine("ricezione file rifiutata");
                     //do something else
                 }
-
             }
+            Listen.recvFiles.Remove(this);
         }
     }
 }

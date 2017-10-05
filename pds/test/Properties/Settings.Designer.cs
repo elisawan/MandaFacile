@@ -30,6 +30,6 @@ namespace test.Properties
         public string FotoProfilo { get; internal set; } = null;
         public string Percorso { get; set; } = null;
         public string UserName { get; internal set; } = null;
-        public bool publico { get; set; } = true;
+        public bool pubblico { get; set; } = true;
     }
 }

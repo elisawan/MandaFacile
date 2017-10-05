@@ -103,10 +103,11 @@ namespace test
                         {
                             stream.Write(byteBuffer, 0, nRead);
                         }
-                        Mandafacile.progresso += 10;
+                        
                         // --> "--FINE--"
                         if (nRead == 0) // file inviato con successo
                         {
+                            Mandafacile.progresso += 10;
                             Console.WriteLine("trasferimento file completato");
                             byteBuffer = Encoding.ASCII.GetBytes(_STRING_END_);
                             stream.Write(byteBuffer, 0, _STRING_END_LEN_);
