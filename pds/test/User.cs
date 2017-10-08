@@ -73,9 +73,7 @@ namespace test
         public String Serialize()
         {
             ImageToBase64();
-            String s = JsonConvert.SerializeObject(this, Formatting.Indented);
-            Console.WriteLine(s);
-            return s;
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
 

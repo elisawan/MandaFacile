@@ -44,14 +44,13 @@ namespace test
         //Costruttore senza parametro ricevuto
         public Mandafacile()
         {
+            MulticastOptionListen ml = new MulticastOptionListen(this);
+            ml.Run();
             if (Properties.Settings.Default.pubblico)
             {
                 Listen.Start();
-                MulticastOptionSend.Run();
+                MulticastOptionSend.Run(MulticastOptionSend.MsgType.whoIsHere);
             }
-                
-            MulticastOptionListen ml = new MulticastOptionListen(this);
-            ml.Run();
 
             InitializeComponent();
             initializeListView();
@@ -229,12 +228,15 @@ namespace test
             
             //Tramite questo foreach, ottieni tutti gli utenti che sono stati selezionati
             ListView.SelectedListViewItemCollection utenti = this.listView1.SelectedItems;
+            int i = 0;
             foreach (ListViewItem item in utenti)
             {   
                 MessageBox.Show(item.Text + "," +item.SubItems[1].Text);
-                SendFile sf = new SendFile(item.SubItems[1].Text, nomeFile);
+                User u = users.ElementAt(i);
+                SendFile sf = new SendFile(u.get_address(), nomeFile);
                 list_sendFiles.Add(sf);
                 threads_sendFile.Add(sf.Run());
+                i++;
             }
         }
 
@@ -293,9 +295,8 @@ namespace test
 
             if (Properties.Settings.Default.pubblico)
             {
-                MulticastOptionSend.Run();
+                MulticastOptionSend.Run(MulticastOptionSend.MsgType.whoIsHere);
             }
-            MessageBox.Show("Get Schwifty!");
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)

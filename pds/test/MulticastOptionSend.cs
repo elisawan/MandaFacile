@@ -16,6 +16,12 @@ namespace test
         static int mcastPort = 11000;
         static Socket mcastSocket;
 
+        public enum MsgType
+        {
+            whoIsHere,
+            IAmHere,
+        };
+
         static void JoinMulticastGroup()
         {
             try
@@ -32,6 +38,8 @@ namespace test
             catch (Exception e)
             {
                 Console.WriteLine("\n" + e.ToString());
+                mcastSocket.Close();
+                return;
             }
         }
 
@@ -47,25 +55,38 @@ namespace test
             catch (Exception e)
             {
                 Console.WriteLine("\n" + e.ToString());
+                mcastSocket.Close();
             }
             mcastSocket.Close();
         }
   
-        public static void Run()
+        public static void Run(MsgType type)
         {
             Console.Write("MulticastOptionSend.Run");
-            string userName = null;
-            string fotoProfilo = null;
-            if ((userName = Properties.Settings.Default.UserName) == null)
+            string s;
+            if(type == MsgType.IAmHere)
             {
-                userName = "io";
+                string userName = null;
+                string fotoProfilo = null;
+                if ((userName = Properties.Settings.Default.UserName) == null)
+                {
+                    userName = "io";
+                }
+                if ((fotoProfilo = Properties.Settings.Default.FotoProfilo) == null)
+                {
+                    fotoProfilo = "don.jpg";
+                }
+                User me = new User(userName, "127.0.0.1", fotoProfilo, Path.GetFileName(fotoProfilo), null);
+                s = me.Serialize();
             }
-            if((fotoProfilo = Properties.Settings.Default.FotoProfilo) == null)
+            else if(type == MsgType.whoIsHere)
             {
-                fotoProfilo = "don.jpg";
+                s = "--WHO-IS-HERE--";
             }
-            User me = new User(userName, "127.0.0.1", fotoProfilo ,Path.GetFileName(fotoProfilo), null);
-            String s = me.Serialize();
+            else
+            {
+                s = "";
+            }
             JoinMulticastGroup();
             BroadcastMessage(s);
         }        

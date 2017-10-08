@@ -122,7 +122,6 @@ namespace test
             // comando
             nRead = nStream.Read(byteBuffer, 0, 1);
             stringBuffer = Encoding.ASCII.GetString(byteBuffer, 0, nRead);
-            Console.WriteLine(stringBuffer);
             // Richiesta di ricezione file
             if (stringBuffer.Equals(RECV_FILE))
             {
@@ -164,7 +163,6 @@ namespace test
                     bool stop = false;
                     while (nLeft > 0 && !stop)
                     {
-                        Console.WriteLine("READ");
                         if (nLeft >= BUF_LEN)
                         {
                             nRead = nStream.Read(byteBuffer, 0, BUF_LEN);
