@@ -93,8 +93,8 @@ namespace test
                     if (stringBuffer.Contains(_STRING_NO_))
                     {
                         MessageBox.Show("file rifiutato");
-                    }
-                    else if(stringBuffer.Contains(_STRING_OK_)){
+                        Mandafacile.progresso = -1;
+                    } else if(stringBuffer.Contains(_STRING_OK_)){
                         MessageBox.Show("richiesta di invio accettata, inizio trasferimento");
                         // --> <File_Content>
                         Int32 nRead = -1;
