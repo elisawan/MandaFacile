@@ -154,11 +154,8 @@ namespace test
                 foreach (User u in users)
                 {
                     ListViewItem item = new ListViewItem(u.get_username(), i);
-
-                    // item.SubItems.Add(u.get_address());
                     imageList.Images.Add(Bitmap.FromFile(u.get_immagine()));
                     this.listView1.Items.Add(item);
-
                     i++;
                 }
             }

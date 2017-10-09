@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Net;
 using Newtonsoft.Json;
 using System.IO;
+using System.Net.Sockets;
 
 namespace test
 {
@@ -25,10 +26,24 @@ namespace test
 
         public User(string nomeUtente, string IpAddress, string PercorsoImmagine, string nomeImmagine, string immagineBase64) {
             this.nomeUtente = nomeUtente;
-            this.IpAddress = IpAddress;
+            this.IpAddress = FindLocalIP();
             this.immaginePath = PercorsoImmagine;
             this.ImmagineUtente = nomeImmagine;
             this.immagineBase64 = immagineBase64;
+            
+        }
+
+        private string FindLocalIP()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork) // IPv4
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("Local IP Address Not Found!");
         }
 
         public void set_immagine(string path)
