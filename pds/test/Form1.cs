@@ -39,6 +39,10 @@ namespace test
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
+
+
+            
+            //toolTip1.SetToolTip(this.updateButton, "Aggiorna lista utenti in rete");
         }
 
         //Costruttore senza parametro ricevuto
@@ -301,6 +305,7 @@ namespace test
             notifyIcon1.Visible = false;
             notifyIcon1.Icon = null;
             notifyIcon1.Dispose();
+            Application.DoEvents();
         }
     }
 }
