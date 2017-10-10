@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Networking.cs" />
     <Compile Include="OpzioniUtenteForm.cs">
       <SubType>Form</SubType>
     </Compile>
