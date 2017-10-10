@@ -48,7 +48,8 @@ namespace test
             IPEndPoint endPoint;
             try
             {
-                endPoint = new IPEndPoint(mcastAddress, mcastPort);
+                //endPoint = new IPEndPoint(mcastAddress, mcastPort);
+                endPoint = new IPEndPoint(IPAddress.Parse("172.20.91.41"), mcastPort);
                 mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes(message), endPoint);
                 Console.WriteLine("Multicast data sent.....");
             }
@@ -76,7 +77,7 @@ namespace test
                 {
                     fotoProfilo = "don.jpg";
                 }
-                User me = new User(userName, "127.0.0.1", fotoProfilo, Path.GetFileName(fotoProfilo), null);
+                User me = new User(userName, null, fotoProfilo, Path.GetFileName(fotoProfilo), null);
                 s = me.Serialize();
             }
             else if(type == MsgType.whoIsHere)
