@@ -48,13 +48,15 @@ namespace test
         //Costruttore senza parametro ricevuto
         public Mandafacile()
         {
+            //in ascolto, per ricevere i pacchetti di presentazione degli altri
             MulticastOptionListen ml = new MulticastOptionListen(this);
             ml.Run();
             if (Properties.Settings.Default.pubblico)
             {
-                Listen.Start();
-                MulticastOptionSend.Run(MulticastOptionSend.MsgType.whoIsHere);
+                Listen.Start(); //in modalità privata non posso ricevere file
             }
+            //chiedo chi altri è in linea ?
+            MulticastOptionSend.Run(MulticastOptionSend.MsgType.whoIsHere);
 
             InitializeComponent();
             initializeListView();
@@ -103,7 +105,7 @@ namespace test
             else {
                 Properties.Settings.Default.pubblico = false;
                 MessageBox.Show("Profilo impostato come privato");
-               
+                Listen.Stop();
             }
         }
 
@@ -232,7 +234,6 @@ namespace test
             int i = 0;
             foreach (ListViewItem item in utenti)
             {   
-                MessageBox.Show(item.Text + "," +item.SubItems[1].Text);
                 User u = users.ElementAt(i);
                 SendFile sf = new SendFile(u.get_address(), nomeFile);
                 list_sendFiles.Add(sf);
@@ -243,32 +244,20 @@ namespace test
 
         public void IncreaseProgressBar(object sender, EventArgs e)
         {
-            if (progresso == -1)
+            // Increment the value of the ProgressBar a value of one each time.
+            progressBar1.Increment(progresso - progressBar1.Value);
+            // Display the textual value of the ProgressBar in the StatusBar control's first panel.
+            statusBar1.Text = progressBar1.Value.ToString() + "% Completed";
+            // Determine if we have completed by comparing the value of the Value property to the Maximum value.
+            if (progressBar1.Value == progressBar1.Maximum)
             {
                 // Stop the timer.
                 time.Stop();
-                MessageBox.Show("L'utente non ha accettato il file");
+                MessageBox.Show("Invio completato!");
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
                 statusBar1.Text = "...";
                 buttonStop.Enabled = false;
-            }
-            else
-            {
-                progressBar1.Increment(progresso - progressBar1.Value);
-                // Display the textual value of the ProgressBar in the StatusBar control's first panel.
-                statusBar1.Text = progressBar1.Value.ToString() + "% Completed";
-                // Determine if we have completed by comparing the value of the Value property to the Maximum value.
-                if (progressBar1.Value == progressBar1.Maximum)
-                {
-                    // Stop the timer.
-                    time.Stop();
-                    MessageBox.Show("Invio completato!");
-                    progressBar1.Value = 0;
-                    progressBar1.Visible = false;
-                    statusBar1.Text = "...";
-                    buttonStop.Enabled = false;
-                }
             }
         }
 

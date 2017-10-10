@@ -21,7 +21,7 @@ namespace test
         static TcpListener server;
 
         static public List<RecvFile> recvFiles = new List<RecvFile>();
-
+        static bool listening = true;
         static public void Start()
         {
             Console.WriteLine("Listen.Start()");
@@ -45,18 +45,32 @@ namespace test
             server.Start();
 
             // Infinite loop
-            while (true)
+            while (listening)
             {
-                Console.WriteLine("Listen.Receive(): listening...");
-                RecvFile receive = new RecvFile();
-                receive.set_client(server.AcceptTcpClient());
-                recvFiles.Add(receive);
-                // => Connection established
-                Console.WriteLine("Listen.Receive(): connected");
-                // Create new Thread only for managing this connection
-                Thread th = new Thread(receive.ServeClient);
-                th.Name = "RecvFile";
-                th.Start();
+                try
+                {
+                    Console.WriteLine("Listen.Receive(): listening...");
+                    RecvFile receive = new RecvFile();
+                    receive.set_client(server.AcceptTcpClient());
+                    recvFiles.Add(receive);
+                    // => Connection established
+                    Console.WriteLine("Listen.Receive(): connected");
+                    // Create new Thread only for managing this connection
+                    Thread th = new Thread(receive.ServeClient);
+                    th.Name = "RecvFile";
+                    th.Start();
+                }
+                catch(SocketException e)
+                {
+                    if ((e.SocketErrorCode == SocketError.Interrupted))
+                    {
+                        // ok 
+                        listening = false;
+                        Console.WriteLine("oooook");
+                    }
+                   
+                }
+                
             }
         }
 
