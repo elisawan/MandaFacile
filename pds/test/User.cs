@@ -26,7 +26,14 @@ namespace test
 
         public User(string nomeUtente, string IpAddress, string PercorsoImmagine, string nomeImmagine, string immagineBase64) {
             this.nomeUtente = nomeUtente;
-            this.IpAddress = FindLocalIP();
+            if(IpAddress == null)
+            {
+                this.IpAddress = FindLocalIP();
+            }
+            else
+            {
+                this.IpAddress = IpAddress;
+            }
             this.immaginePath = PercorsoImmagine;
             this.ImmagineUtente = nomeImmagine;
             this.immagineBase64 = immagineBase64;

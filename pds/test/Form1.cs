@@ -162,6 +162,7 @@ namespace test
                     ListViewItem item = new ListViewItem(u.get_username(), i);
                     imageList.Images.Add(Bitmap.FromFile(u.get_immagine()));
                     this.listView1.Items.Add(item);
+                    MessageBox.Show(u.get_address() + u.get_username());
                     i++;
                 }
             }

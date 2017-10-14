@@ -17,12 +17,18 @@ namespace test
         {
             InitializeComponent();
             caricaPref();
+            if (Properties.Settings.Default.AccettaTutto)
+                checkBox1.Checked = true;
+            else
+                checkBox1.Checked = false;
         }
 
         public void caricaPref()
         {
             if (Properties.Settings.Default.UserName != null)
                 this.usernameTextBox.Text = Properties.Settings.Default.UserName;
+
+
             if (Properties.Settings.Default.FotoProfilo != null)
             {
                 this.userPic.Image = Bitmap.FromFile(Properties.Settings.Default.FotoProfilo);
@@ -58,10 +64,10 @@ namespace test
 
         private void buttonSelezionaPath_Click(object sender, EventArgs e)
         {
-            DialogResult result = selezionaPercorsoDialog.ShowDialog();
+            DialogResult result = Cartella.ShowDialog();
             if (result == DialogResult.OK)
             {
-                String folderName = selezionaPercorsoDialog.SelectedPath;
+                String folderName = Cartella.SelectedPath;
 
                 MessageBox.Show("Il percorso selezionato è: " + folderName);
                 Properties.Settings.Default.Percorso = folderName;
@@ -72,6 +78,22 @@ namespace test
         private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {   
+            
+            if (Properties.Settings.Default.AccettaTutto == false)
+            {
+                Properties.Settings.Default.AccettaTutto = true;
+                Properties.Settings.Default.Save();
+            
+            }
+            else
+            {
+                Properties.Settings.Default.AccettaTutto = false;
+                Properties.Settings.Default.Save();
+            }
         }
     }
 }

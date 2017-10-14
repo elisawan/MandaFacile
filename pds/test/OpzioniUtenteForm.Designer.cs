@@ -35,15 +35,16 @@
             this.buttonSalvaModificheProfilo = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonSelezionaPath = new System.Windows.Forms.Button();
-            this.selezionaPercorsoDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.Cartella = new System.Windows.Forms.FolderBrowserDialog();
             this.selezionaFotoDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.userPic)).BeginInit();
             this.SuspendLayout();
             // 
             // userPic
             // 
-            this.userPic.Location = new System.Drawing.Point(93, 12);
+            this.userPic.Location = new System.Drawing.Point(132, 12);
             this.userPic.Name = "userPic";
             this.userPic.Size = new System.Drawing.Size(154, 139);
             this.userPic.TabIndex = 0;
@@ -52,7 +53,7 @@
             // usernameTextBox
             // 
             this.usernameTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.usernameTextBox.Location = new System.Drawing.Point(108, 186);
+            this.usernameTextBox.Location = new System.Drawing.Point(141, 186);
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(129, 20);
             this.usernameTextBox.TabIndex = 1;
@@ -61,7 +62,7 @@
             // 
             // buttonScegliFoto
             // 
-            this.buttonScegliFoto.Location = new System.Drawing.Point(132, 157);
+            this.buttonScegliFoto.Location = new System.Drawing.Point(172, 157);
             this.buttonScegliFoto.Name = "buttonScegliFoto";
             this.buttonScegliFoto.Size = new System.Drawing.Size(75, 23);
             this.buttonScegliFoto.TabIndex = 2;
@@ -71,7 +72,7 @@
             // 
             // ButtonAnnullaModificheProfilo
             // 
-            this.ButtonAnnullaModificheProfilo.Location = new System.Drawing.Point(21, 282);
+            this.ButtonAnnullaModificheProfilo.Location = new System.Drawing.Point(25, 313);
             this.ButtonAnnullaModificheProfilo.Name = "ButtonAnnullaModificheProfilo";
             this.ButtonAnnullaModificheProfilo.Size = new System.Drawing.Size(75, 23);
             this.ButtonAnnullaModificheProfilo.TabIndex = 3;
@@ -80,7 +81,7 @@
             // 
             // buttonSalvaModificheProfilo
             // 
-            this.buttonSalvaModificheProfilo.Location = new System.Drawing.Point(242, 282);
+            this.buttonSalvaModificheProfilo.Location = new System.Drawing.Point(295, 313);
             this.buttonSalvaModificheProfilo.Name = "buttonSalvaModificheProfilo";
             this.buttonSalvaModificheProfilo.Size = new System.Drawing.Size(75, 23);
             this.buttonSalvaModificheProfilo.TabIndex = 4;
@@ -91,7 +92,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(42, 230);
+            this.label1.Location = new System.Drawing.Point(78, 257);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(259, 13);
             this.label1.TabIndex = 5;
@@ -99,7 +100,7 @@
             // 
             // buttonSelezionaPath
             // 
-            this.buttonSelezionaPath.Location = new System.Drawing.Point(132, 246);
+            this.buttonSelezionaPath.Location = new System.Drawing.Point(172, 273);
             this.buttonSelezionaPath.Name = "buttonSelezionaPath";
             this.buttonSelezionaPath.Size = new System.Drawing.Size(75, 23);
             this.buttonSelezionaPath.TabIndex = 6;
@@ -109,13 +110,25 @@
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.FileName = "foto.jpg";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(132, 223);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(154, 17);
+            this.checkBox1.TabIndex = 7;
+            this.checkBox1.Text = "Accetta file senza chiedere";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // OpzioniUtenteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(350, 317);
+            this.ClientSize = new System.Drawing.Size(397, 359);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.buttonSelezionaPath);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonSalvaModificheProfilo);
@@ -141,9 +154,10 @@
         private System.Windows.Forms.Button buttonSalvaModificheProfilo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonSelezionaPath;
-        private System.Windows.Forms.FolderBrowserDialog selezionaPercorsoDialog;
+        private System.Windows.Forms.FolderBrowserDialog Cartella;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.FolderBrowserDialog selezionaFotoDialog;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
