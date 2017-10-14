@@ -49,7 +49,7 @@ namespace test
             try
             {
                 //endPoint = new IPEndPoint(mcastAddress, mcastPort);
-                endPoint = new IPEndPoint(IPAddress.Parse("172.20.90.156"), mcastPort);
+                endPoint = new IPEndPoint(IPAddress.Parse("172.20.91.41"), mcastPort);
                 mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes(message), endPoint);
                 Console.WriteLine("Multicast data sent.....");
             }
