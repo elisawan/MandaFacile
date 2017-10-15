@@ -31,6 +31,6 @@ namespace test.Properties
         public string Percorso { get; set; } = null;
         public string UserName { get; internal set; } = null;
         public bool pubblico { get; set; } = true;
-        public bool AcceptAll { get; set; } = true;
+        public bool AcceptAll { get; set; } = false;
     }
 }

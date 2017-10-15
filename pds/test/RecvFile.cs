@@ -82,11 +82,10 @@ namespace test
         }
     }
 
-    class RecvFile
+    class RecvFile : TCP
     {
         private TcpClient client;
         private int nRead;
-        
 
         public AutoResetEvent terminateRecv = new AutoResetEvent(false);
         public ManualResetEvent doRecv = new ManualResetEvent(true);
@@ -112,20 +111,20 @@ namespace test
             handle[0] = terminateRecv;
             handle[1] = doRecv;
 
-            NetworkStream nStream = client.GetStream();
+            netStream = client.GetStream();
 
 
             // comando
-            nRead = nStream.Read(byteBuffer, 0, 1);
-            stringBuffer = Encoding.ASCII.GetString(byteBuffer, 0, nRead);
+            ReadnNetStream(ref byteBuffer, 1);
+            stringBuffer = Encoding.ASCII.GetString(byteBuffer, 0, 1);
             // Richiesta di ricezione file
             if (stringBuffer.Equals(Networking.RECV_FILE))
             {
                 // Leggere la lunghezza del nome del file
-                nRead = nStream.Read(byteBuffer, 0, sizeof(Int32));
+                ReadnNetStream(ref byteBuffer, sizeof(Int32));
                 fileName_len = BitConverter.ToInt32(byteBuffer, 0);
                 // Leggere il file name 
-                nRead = nStream.Read(byteBuffer, 0, fileName_len);
+                ReadnNetStream(ref byteBuffer, fileName_len);
                 fileName = Encoding.UTF8.GetString(byteBuffer).TrimEnd('\0');
 
                 // TO DO: update GUI with fileName
@@ -153,7 +152,7 @@ namespace test
                 if (accepted)
                 {
                     byteBuffer = Encoding.ASCII.GetBytes(Networking._STRING_OK_);
-                    nStream.Write(byteBuffer, 0, byteBuffer.Length);
+                    netStream.Write(byteBuffer, 0, byteBuffer.Length);
 
                     if ((path = Properties.Settings.Default.Percorso) == null)
                     {
@@ -167,7 +166,7 @@ namespace test
                     fStream = File.OpenWrite(path);
 
                     // Read file length
-                    nRead = nStream.Read(byteBuffer, 0, sizeof(Int32));
+                    ReadnNetStream(ref byteBuffer, sizeof(Int32));
                     fileLength = BitConverter.ToInt32(byteBuffer, 0);
 
                     // Read file data from socket and write it on local disk
@@ -178,11 +177,11 @@ namespace test
                     {
                         if (nLeft >= Networking.TCP_limit)
                         {
-                            nRead = nStream.Read(byteBuffer, 0, Networking.TCP_limit);
+                            ReadnNetStream(ref byteBuffer, Networking.TCP_limit);
                         }
                         else
                         {
-                            nRead = nStream.Read(byteBuffer, 0, nLeft);
+                            ReadnNetStream(ref byteBuffer, nLeft);
                         }
                         if (Encoding.ASCII.GetString(byteBuffer).Contains(Networking._STRING_ERR_))
                         {
@@ -200,14 +199,14 @@ namespace test
                     }
                     
                     fStream.Close();
-                    nStream.Close();
+                    netStream.Close();
                 }
                 else
                 {
                     byteBuffer = Encoding.ASCII.GetBytes(Networking._STRING_NO_);
-                    nStream.Write(byteBuffer, 0, byteBuffer.Length);
+                    netStream.Write(byteBuffer, 0, byteBuffer.Length);
                     Console.WriteLine("ricezione file rifiutata");
-                    nStream.Close();
+                    netStream.Close();
                     //do something else
                 }
             }
