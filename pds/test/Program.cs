@@ -20,7 +20,6 @@ namespace test
             {
                 Directory.CreateDirectory(@"C:\Users\" + System.Environment.UserName + @"\Documents\Mandafacile");
                 Directory.CreateDirectory(@"C:\Users\" + System.Environment.UserName + @"\Documents\Mandafacile\tmp_s");
-
             }
 
 

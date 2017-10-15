@@ -241,6 +241,7 @@ namespace test
                 threads_sendFile.Add(sf.Run());
                 i++;
             }
+            nomeFile = null;
         }
 
         public void IncreaseProgressBar(object sender, EventArgs e)

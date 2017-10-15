@@ -12,8 +12,6 @@ namespace test
 {
     class MulticastOptionSend
     {
-        static IPAddress mcastAddress = IPAddress.Parse("224.168.100.2");
-        static int mcastPort = 11000;
         static Socket mcastSocket;
 
         public enum MsgType
@@ -32,7 +30,7 @@ namespace test
                 mcastSocket.Bind(IPlocal);
 
                 MulticastOption mcastOption;
-                mcastOption = new MulticastOption(mcastAddress, localIPAddr);
+                mcastOption = new MulticastOption(Networking.mcastAddress, localIPAddr);
                 mcastSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, mcastOption);
             }
             catch (Exception e)
@@ -48,8 +46,8 @@ namespace test
             IPEndPoint endPoint;
             try
             {
-                //endPoint = new IPEndPoint(mcastAddress, mcastPort);
-                endPoint = new IPEndPoint(IPAddress.Parse("172.20.91.41"), mcastPort);
+                endPoint = new IPEndPoint(Networking.mcastAddress, Networking.mcastPort);
+                //endPoint = new IPEndPoint(IPAddress.Parse("172.20.91.41"), mcastPort);
                 mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes(message), endPoint);
                 Console.WriteLine("Multicast data sent.....");
             }

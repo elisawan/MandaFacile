@@ -15,11 +15,8 @@ namespace test
 {
     public class MulticastOptionListen
     {
-        private static IPAddress mcastAddress = IPAddress.Parse("224.168.100.2");
-        private static int mcastPort = 11000;
         private static Socket mcastSocket;
         private static MulticastOption mcastOption;
-        const int UDP_limit = 64 * 1024  * 8;
         static private string path_fotoProfilo = @"C:\Users\" + Environment.UserName + @"\Documents\Mandafacile\FotoProfilo";
         private static bool stop = false;
         private Mandafacile mf;
@@ -35,11 +32,11 @@ namespace test
             {
                 mcastSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 IPAddress localIPAddr = IPAddress.Any;
-                EndPoint localEP = (EndPoint)new IPEndPoint(localIPAddr, mcastPort);
+                EndPoint localEP = (EndPoint)new IPEndPoint(localIPAddr, Networking.mcastPort);
 
                 mcastSocket.Bind(localEP);
 
-                mcastOption = new MulticastOption(mcastAddress);
+                mcastOption = new MulticastOption(Networking.mcastAddress);
 
                 mcastSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, mcastOption);
             }
@@ -52,14 +49,14 @@ namespace test
         private void ReceiveBroadcastMessages()
         {
             
-            IPEndPoint groupEP = new IPEndPoint(mcastAddress, mcastPort);
+            IPEndPoint groupEP = new IPEndPoint(Networking.mcastAddress, Networking.mcastPort);
             EndPoint remoteEP = (EndPoint)new IPEndPoint(IPAddress.Any, 0);
 
             try
             {
                 while (!stop)
                 {
-                    byte[] bytes = new Byte[UDP_limit];
+                    byte[] bytes = new Byte[Networking.UDP_limit];
                     Console.WriteLine("Waiting for multicast packets...");
                     mcastSocket.ReceiveFrom(bytes, ref remoteEP);
                     string stringBuffer = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
