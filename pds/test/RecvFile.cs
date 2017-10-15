@@ -161,9 +161,19 @@ namespace test
                         Properties.Settings.Default.Save();
                         path = Properties.Settings.Default.Percorso;
                     }
-                    path = path + @"\" + fileName;
-                    // TO DO: manage file name conflicts
-                    fStream = File.OpenWrite(path);
+
+                    // Manage file name conflicts
+                    string fullPath = path + @"\" + fileName;
+                    string fileNameOnly = Path.GetFileNameWithoutExtension(fileName);
+                    int count = 1;
+                    string extension = Path.GetExtension(fileName);
+                    string newFullPath = fullPath;
+                    while (File.Exists(newFullPath))
+                    {
+                        string tempFileName = string.Format("{0}({1})", fileNameOnly, count++);
+                        newFullPath = Path.Combine(path, tempFileName + extension);
+                    }
+                    fStream = File.OpenWrite(newFullPath);
 
                     // Read file length
                     ReadnNetStream(ref byteBuffer, sizeof(Int32));
@@ -178,10 +188,12 @@ namespace test
                         if (nLeft >= Networking.TCP_limit)
                         {
                             ReadnNetStream(ref byteBuffer, Networking.TCP_limit);
+                            nRead = Networking.TCP_limit;
                         }
                         else
                         {
                             ReadnNetStream(ref byteBuffer, nLeft);
+                            nRead = nLeft;
                         }
                         if (Encoding.ASCII.GetString(byteBuffer).Contains(Networking._STRING_ERR_))
                         {
