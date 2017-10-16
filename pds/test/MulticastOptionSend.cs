@@ -25,7 +25,7 @@ namespace test
             try
             {
                 mcastSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                IPAddress localIPAddr = IPAddress.Any;      
+                IPAddress localIPAddr = IPAddress.Parse("172.21.56.130");     
                 IPEndPoint IPlocal = new IPEndPoint(localIPAddr, 0);
                 mcastSocket.Bind(IPlocal);
 
