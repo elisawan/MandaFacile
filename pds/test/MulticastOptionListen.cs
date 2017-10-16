@@ -62,7 +62,10 @@ namespace test
                     string stringBuffer = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
                     if (stringBuffer.Contains("--WHO-IS-HERE--"))
                     {
-                        MulticastOptionSend.Run(MulticastOptionSend.MsgType.IAmHere);
+                        if (Properties.Settings.Default.pubblico)
+                        {
+                            MulticastOptionSend.Run(MulticastOptionSend.MsgType.IAmHere);
+                        }
                     }
                     else
                     {

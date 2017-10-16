@@ -308,11 +308,7 @@ namespace test
                 users = null;
                 users = new List<User>();
             }
-
-            if (Properties.Settings.Default.pubblico)
-            {
-                MulticastOptionSend.Run(MulticastOptionSend.MsgType.whoIsHere);
-            }
+            MulticastOptionSend.Run(MulticastOptionSend.MsgType.whoIsHere);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
