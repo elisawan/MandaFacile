@@ -13,6 +13,7 @@ using System.Collections.Generic;
  */
 namespace test
 {
+    /* classe con socket udp in ascolto su indirizzo multicast = 224.168.100.2 e porta = 11000 */
     public class MulticastOptionListen
     {
         private static Socket mcastSocket;
@@ -39,6 +40,8 @@ namespace test
                 mcastOption = new MulticastOption(Networking.mcastAddress);
 
                 mcastSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, mcastOption);
+
+                mcastSocket.MulticastLoopback = false;
             }
             catch (Exception e)
             {

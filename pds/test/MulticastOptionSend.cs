@@ -25,7 +25,7 @@ namespace test
             try
             {
                 mcastSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                IPAddress localIPAddr = IPAddress.Any;      
+                IPAddress localIPAddr = IPAddress.Any;
                 IPEndPoint IPlocal = new IPEndPoint(localIPAddr, 0);
                 mcastSocket.Bind(IPlocal);
 
@@ -58,12 +58,12 @@ namespace test
             }
             mcastSocket.Close();
         }
-  
+
         public static void Run(MsgType type)
         {
             Console.Write("MulticastOptionSend.Run");
             string s;
-            if(type == MsgType.IAmHere)
+            if (type == MsgType.IAmHere)
             {
                 string userName = null;
                 string fotoProfilo = null;
@@ -78,7 +78,7 @@ namespace test
                 User me = new User(userName, null, fotoProfilo, Path.GetFileName(fotoProfilo), null);
                 s = me.Serialize();
             }
-            else if(type == MsgType.whoIsHere)
+            else if (type == MsgType.whoIsHere)
             {
                 s = "--WHO-IS-HERE--";
             }
@@ -88,6 +88,6 @@ namespace test
             }
             JoinMulticastGroup();
             BroadcastMessage(s);
-        }        
+        }
     }
 }
