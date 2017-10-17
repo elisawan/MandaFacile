@@ -19,7 +19,7 @@ namespace test
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem menuItemPubblicoPrivato;
         private string nomeFile = null;
-        private System.Windows.Forms.Timer time = new System.Windows.Forms.Timer();
+        private System.Windows.Forms.Timer time;
         private List<Thread> threads_sendFile = new List<Thread>();
         private List<SendFile> list_sendFiles = new List<SendFile>();
         public static int progresso;
@@ -190,6 +190,7 @@ namespace test
         //bottone invia
         private void button1_Click(object sender, EventArgs e)
         {
+            time = new System.Windows.Forms.Timer();
             //Controllo se file=null
             if (nomeFile == null)
             {
@@ -261,7 +262,9 @@ namespace test
                 progressBar1.Visible = false;
                 statusBar1.Text = "...";
                 buttonStop.Enabled = false;
-            }else
+                time.Dispose();
+            }
+            else
             {
                 // Increment the value of the ProgressBar a value of one each time.
                 progressBar1.Increment(progresso - progressBar1.Value);
@@ -277,16 +280,15 @@ namespace test
                     progressBar1.Visible = false;
                     statusBar1.Text = "...";
                     buttonStop.Enabled = false;
+                    time.Dispose();
                 }
             }
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
-            statusBar1.Text = "...";
-            buttonStop.Enabled = false;
-            progressBar1.Value = 0;
-            progressBar1.Visible = false;
+
+           
             //bisogna fare in modo che si chiami abort sul thread in sendfile
             foreach (SendFile sf in list_sendFiles)
             {
@@ -296,6 +298,10 @@ namespace test
             {
                 th.Join();
             }
+            progressBar1.Value = 0;
+            progressBar1.Visible = false;
+            statusBar1.Text = "...";
+            buttonStop.Enabled = false;
         }
 
         //METODO OPZIONI PROFILO

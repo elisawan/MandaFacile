@@ -95,7 +95,7 @@ namespace test
                         // --> "--FINE--"
                         if (nRead == 0) // file inviato con successo
                         {
-                            Mandafacile.progresso += 10;
+                            Mandafacile.progresso += 12;
                             Console.WriteLine("trasferimento file completato");
                             byteBuffer = Encoding.ASCII.GetBytes(Networking._STRING_END_);
                             netStream.Write(byteBuffer, 0, Networking._STRING_END_LEN_);
@@ -111,12 +111,10 @@ namespace test
                     {
                         MessageBox.Show("errore di protocollo");
                     }
-                    Mandafacile.progresso++;
                 }
             }
             netStream.Close();
             client.Close();
-            Mandafacile.progresso++;
         }
 
         public Thread Run()
