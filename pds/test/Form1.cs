@@ -242,7 +242,13 @@ namespace test
             }
             nomeFile = null;
         }
-
+        /// <summary>
+        /// 
+        /// Incrementa la barra di progresso durante l'invio di un file.
+        /// 
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
         public void IncreaseProgressBar(object sender, EventArgs e)
         {
 
