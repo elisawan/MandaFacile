@@ -222,7 +222,6 @@ namespace test
             buttonStop.Enabled = true;
             progressBar1.Visible = true;
             progressBar1.Style = ProgressBarStyle.Continuous;
-
             // Set the interval for the timer.
             time.Interval = 100;
             // Connect the Tick event of the timer to its event handler.

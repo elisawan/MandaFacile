@@ -28,7 +28,6 @@ namespace test
                 IPAddress localIPAddr = IPAddress.Any;
                 IPEndPoint IPlocal = new IPEndPoint(localIPAddr, 0);
                 mcastSocket.Bind(IPlocal);
-
                 MulticastOption mcastOption;
                 mcastOption = new MulticastOption(Networking.mcastAddress, localIPAddr);
                 mcastSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, mcastOption);

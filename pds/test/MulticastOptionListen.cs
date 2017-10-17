@@ -34,14 +34,10 @@ namespace test
                 mcastSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 IPAddress localIPAddr = IPAddress.Any;
                 EndPoint localEP = (EndPoint)new IPEndPoint(localIPAddr, Networking.mcastPort);
-
                 mcastSocket.Bind(localEP);
-
                 mcastOption = new MulticastOption(Networking.mcastAddress);
-
                 mcastSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, mcastOption);
-
-                mcastSocket.MulticastLoopback = false;
+                //mcastSocket.MulticastLoopback = false;
             }
             catch (Exception e)
             {
@@ -51,10 +47,8 @@ namespace test
 
         private void ReceiveBroadcastMessages()
         {
-            
             IPEndPoint groupEP = new IPEndPoint(Networking.mcastAddress, Networking.mcastPort);
             EndPoint remoteEP = (EndPoint)new IPEndPoint(IPAddress.Any, 0);
-
             try
             {
                 while (!stop)
