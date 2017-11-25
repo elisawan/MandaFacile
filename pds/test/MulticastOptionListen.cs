@@ -27,7 +27,7 @@ namespace test
             this.mf = mf;
         }
 
-        private void StartMulticast()
+        private bool StartMulticast()
         {
             try
             {
@@ -42,7 +42,9 @@ namespace test
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                return false;
             }
+            return true;
         }
 
         private void ReceiveBroadcastMessages()
@@ -96,8 +98,10 @@ namespace test
 
         public void Listen()
         {
-            StartMulticast();
-            ReceiveBroadcastMessages();
+            if (StartMulticast())
+            {
+                ReceiveBroadcastMessages();
+            }
         }
 
         public void Run()

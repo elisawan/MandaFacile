@@ -25,6 +25,8 @@ namespace test
         public static int progresso;
         public delegate void UpdateUser();
         public UpdateUser updateUserDelegate;
+        public delegate void FatalError(string s);
+        public FatalError fatalError;
         public List<User> users = new List<User>();
 
         //Costruttore che riceve il nome del file 
@@ -65,6 +67,7 @@ namespace test
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
             updateUserDelegate = new UpdateUser(fillListView);
+            fatalError = new FatalError(ErrorMessage);
         }
 
         //MENU' CONTESTUALE ICONA DI NOTIFICA -> Questi metodi gestiscono l'icona di notifica e le sue funzioni
@@ -329,5 +332,24 @@ namespace test
             notifyIcon1.Dispose();
             Application.DoEvents();
         }
+
+        public void ErrorMessage(string msg)
+        {
+            MessageBox.Show(msg);
+            Application.Exit();
+        }
+
+        public void ShowErrorMessage(string error)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(fatalError, new object[] { error });    
+            }
+        }
+
+        
+
+
+
     }
 }
