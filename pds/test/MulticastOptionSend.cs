@@ -41,7 +41,6 @@ namespace test
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
-                mcastSocket.Close();
                 mf.Invoke(mf.fatalError, "Errore di connessione alla rete");
             }
         }
@@ -52,7 +51,6 @@ namespace test
             try
             {
                 endPoint = new IPEndPoint(Networking.mcastAddress, Networking.mcastPort);
-                //endPoint = new IPEndPoint(IPAddress.Parse("172.20.91.41"), mcastPort);
                 mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes(message), endPoint);
                 Console.WriteLine("Multicast data sent.....");
             }
@@ -68,18 +66,18 @@ namespace test
         public void Run(MsgType type)
         {
             Console.Write("MulticastOptionSend.Run");
-            string s;
+            string s = null;
             if (type == MsgType.IAmHere)
             {
                 string userName = null;
                 string fotoProfilo = null;
                 if ((userName = Properties.Settings.Default.UserName) == null)
                 {
-                    userName = "io";
+                    userName = System.Environment.UserName;
                 }
                 if ((fotoProfilo = Properties.Settings.Default.FotoProfilo) == null)
                 {
-                    fotoProfilo = "don.jpg";
+                    fotoProfilo = "default.png";
                 }
                 User me = new User(userName, null, fotoProfilo, Path.GetFileName(fotoProfilo), null);
                 s = me.Serialize();

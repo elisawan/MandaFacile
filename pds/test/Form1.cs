@@ -179,23 +179,9 @@ namespace test
             this.Controls.Add(listView1);
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listView1_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-
-        }
         //FINE LISTA
         //#########################################################################
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            
-        }
-
+       
         //METODI THREAD -> Valutarne lo spostamento/cancellazione
         //bottone invia
         private void button1_Click(object sender, EventArgs e)
