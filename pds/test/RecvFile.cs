@@ -220,7 +220,7 @@ namespace test
                         {
                             stop = true;
                             Console.WriteLine("Ricezione file fallito.");
-                            fStream.Close();
+                            stop = true;
                             File.Delete(path);
                         }
                         else
