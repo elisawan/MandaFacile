@@ -27,7 +27,7 @@ namespace test
             this.mf = mf;
         }
 
-        private bool StartMulticast()
+        private void StartMulticast()
         {
             try
             {
@@ -42,9 +42,8 @@ namespace test
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
-                return false;
+                mf.Invoke(mf.fatalError, "Errore di connessione alla rete");
             }
-            return true;
         }
 
         private void ReceiveBroadcastMessages()
@@ -63,7 +62,7 @@ namespace test
                     {
                         if (Properties.Settings.Default.pubblico)
                         {
-                            MulticastOptionSend.Run(MulticastOptionSend.MsgType.IAmHere);
+                            mf.ms.Run(MulticastOptionSend.MsgType.IAmHere);
                         }
                     }
                     else
@@ -88,6 +87,7 @@ namespace test
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                mf.Invoke(mf.fatalError, "Errore di ricezione messaggi dagli altri utenti");
             }
         }
 
@@ -98,18 +98,24 @@ namespace test
 
         public void Listen()
         {
-            if (StartMulticast())
-            {
-                ReceiveBroadcastMessages();
-            }
+            StartMulticast();
+            ReceiveBroadcastMessages();
         }
 
         public void Run()
         {
-            Thread thread = new Thread(Listen);
-            thread.IsBackground = true;
-            thread.Name = "MulticastOptionListen";
-            thread.Start();
+            try
+            {
+                Thread thread = new Thread(Listen);
+                thread.IsBackground = true;
+                thread.Name = "MulticastOptionListen";
+                thread.Start();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                mf.Invoke(mf.fatalError, "Errore fatale");
+            }
         }
     }
 }

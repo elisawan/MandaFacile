@@ -28,6 +28,9 @@ namespace test
         public delegate void FatalError(string s);
         public FatalError fatalError;
         public List<User> users = new List<User>();
+        MulticastOptionListen ml;
+        public MulticastOptionSend ms { get; }
+        Listen listen;
 
         //Costruttore che riceve il nome del file 
         public Mandafacile(string filename)
@@ -41,8 +44,6 @@ namespace test
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
-
-
             
             //toolTip1.SetToolTip(this.updateButton, "Aggiorna lista utenti in rete");
         }
@@ -50,24 +51,28 @@ namespace test
         //Costruttore senza parametro ricevuto
         public Mandafacile()
         {
+            InitializeComponent();
+            initializeListView();
+            updateUserDelegate = new UpdateUser(fillListView);
+            fatalError = new FatalError(ErrorMessage);
+
             //in ascolto, per ricevere i pacchetti di presentazione degli altri
-            MulticastOptionListen ml = new MulticastOptionListen(this);
+            ml = new MulticastOptionListen(this);
             ml.Run();
             if (Properties.Settings.Default.pubblico)
             {
-                Listen.Start(); //in modalità privata non posso ricevere file
+                listen = new Listen(this);
+                listen.Start(); //in modalità privata non posso ricevere file
             }
             //chiedo chi altri è in linea ?
-            MulticastOptionSend.Run(MulticastOptionSend.MsgType.whoIsHere);
-
-            InitializeComponent();
-            initializeListView();
+            ms = new MulticastOptionSend(this);
+            ms.Run(MulticastOptionSend.MsgType.whoIsHere);
+          
             //riempie la lista -> da inserire in un thread?
             fillListView();
             //gestisce l'icona nella barra delle notifiche
             set_notifyIconMenu();
-            updateUserDelegate = new UpdateUser(fillListView);
-            fatalError = new FatalError(ErrorMessage);
+            
         }
 
         //MENU' CONTESTUALE ICONA DI NOTIFICA -> Questi metodi gestiscono l'icona di notifica e le sue funzioni
@@ -103,12 +108,14 @@ namespace test
             {
                 MessageBox.Show("Profilo impostato come pubblico");
                 Properties.Settings.Default.pubblico = true;
-                Listen.Start();
+                listen = new Listen(this);
+                listen.Start();
             }
             else {
                 Properties.Settings.Default.pubblico = false;
                 MessageBox.Show("Profilo impostato come privato");
-                Listen.Stop();
+                listen.Stop();
+                listen = null;
             }
         }
 
@@ -322,7 +329,7 @@ namespace test
                 users = null;
                 users = new List<User>();
             }
-            MulticastOptionSend.Run(MulticastOptionSend.MsgType.whoIsHere);
+            ms.Run(MulticastOptionSend.MsgType.whoIsHere);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)

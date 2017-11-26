@@ -10,9 +10,15 @@ using System.IO;
  */
 namespace test
 {
-    class MulticastOptionSend
+    public class MulticastOptionSend
     {
         static Socket mcastSocket;
+        private Mandafacile mf;
+
+        public MulticastOptionSend(Mandafacile mf)
+        {
+            this.mf = mf;
+        }
 
         public enum MsgType
         {
@@ -20,7 +26,7 @@ namespace test
             IAmHere,
         };
 
-        static void JoinMulticastGroup()
+        public void JoinMulticastGroup()
         {
             try
             {
@@ -34,13 +40,13 @@ namespace test
             }
             catch (Exception e)
             {
-                Console.WriteLine("\n" + e.ToString());
+                Console.WriteLine(e.ToString());
                 mcastSocket.Close();
-                return;
+                mf.Invoke(mf.fatalError, "Errore di connessione alla rete");
             }
         }
 
-        static void BroadcastMessage(string message)
+        public void BroadcastMessage(string message)
         {
             IPEndPoint endPoint;
             try
@@ -52,13 +58,14 @@ namespace test
             }
             catch (Exception e)
             {
-                Console.WriteLine("\n" + e.ToString());
+                Console.WriteLine(e.ToString());
                 mcastSocket.Close();
+                mf.Invoke(mf.fatalError, "Errore di connessione alla rete");
             }
             mcastSocket.Close();
         }
 
-        public static void Run(MsgType type)
+        public void Run(MsgType type)
         {
             Console.Write("MulticastOptionSend.Run");
             string s;

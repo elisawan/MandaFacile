@@ -13,20 +13,35 @@ namespace test
 {
     class Listen 
     {
-        static TcpListener server;
+        TcpListener server;
 
-        static public List<RecvFile> recvFiles = new List<RecvFile>();
-        static bool listening = true;
-        static public void Start()
+        public List<RecvFile> recvFiles = new List<RecvFile>();
+        bool listening = true;
+        Mandafacile mf;
+
+        public Listen(Mandafacile mf)
         {
-            Console.WriteLine("Listen.Start()");
-            Thread th = new Thread(Receive);
-            th.IsBackground = true;
-            th.Name = "RecvFileListen";
-            th.Start();
+            this.mf = mf;
         }
 
-        static private void Receive()
+        public void Start()
+        {
+            Console.WriteLine("Listen.Start()");
+            try
+            {
+                Thread th = new Thread(Receive);
+                th.IsBackground = true;
+                th.Name = "RecvFileListen";
+                th.Start();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                mf.Invoke(mf.fatalError, "Errore fatale");
+            }
+        }
+
+        private void Receive()
         {
             Console.WriteLine("Listen.Receive()");
 
@@ -45,7 +60,7 @@ namespace test
                 try
                 {
                     Console.WriteLine("Listen.Receive(): listening...");
-                    RecvFile receive = new RecvFile();
+                    RecvFile receive = new RecvFile(this);
                     receive.set_client(server.AcceptTcpClient());
                     recvFiles.Add(receive);
                     // => Connection established
@@ -65,7 +80,7 @@ namespace test
             }
         }
 
-        static public void Stop()
+        public void Stop()
         {
             Console.WriteLine("Listen.Stop()");
 
@@ -86,9 +101,15 @@ namespace test
     {
         private TcpClient client;
         private int nRead;
+        Listen listen;
 
         public AutoResetEvent terminateRecv = new AutoResetEvent(false);
         public ManualResetEvent doRecv = new ManualResetEvent(true);
+
+        public RecvFile(Listen l)
+        {
+            listen = l;
+        }
 
         public void set_client(TcpClient c)
         {
@@ -222,7 +243,7 @@ namespace test
                     //do something else
                 }
             }
-            Listen.recvFiles.Remove(this);
+            listen.recvFiles.Remove(this);
         }
     }
 }
